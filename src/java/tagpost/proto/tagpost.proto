@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package tagpost;
+
+option java_package = "tagpost";
+option java_outer_classname = "TagPostProto";
+
+// The response service definition.
+service Response {
+  // Sends a response
+  rpc Response (Request) returns (Reply) {}
+}
+
+// request message 
+message Request {
+  string noticekey = 1;
+}
+
+// The response message 
+message Reply {
+  repeated string comments = 1;
+}
