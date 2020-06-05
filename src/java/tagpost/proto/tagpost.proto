@@ -14,7 +14,7 @@ service Response {
 // request message 
 message Request {
   string notice_key = 1;
-  string id = 2;
+  string request_id = 2;
   string user = 3;
   string project = 4;
 }
