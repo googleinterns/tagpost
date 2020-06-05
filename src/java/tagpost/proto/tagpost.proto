@@ -13,10 +13,13 @@ service Response {
 
 // request message 
 message Request {
-  string noticekey = 1;
+  string notice_key = 1;
+  string id = 2;
+  string user = 3;
+  string project = 4;
 }
 
-// The response message 
+// reply message 
 message Reply {
   repeated string comments = 1;
 }
