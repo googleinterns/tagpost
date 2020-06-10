@@ -2,7 +2,8 @@ syntax = "proto3";
 
 package tagpost;
 
-option java_package = "tagpost";
+option java_multiple_files = true;
+option java_package = "com.google.tagpost";
 option java_outer_classname = "TagPostProto";
 
 // The response service definition.
@@ -21,5 +22,6 @@ message Request {
 
 // reply message 
 message Reply {
-  repeated string comments = 1;
+  string message = 1;
+  repeated string comments = 2;
 }
