@@ -7,17 +7,17 @@ option java_package = "com.google.tagpost";
 option java_outer_classname = "TagPostProto";
 
 service TagpostService {
-  rpc SimpleReply(SimpleReplyRequest) returns (SimpleReplyResponse) {}
+  rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
 }
 
-message SimpleReplyRequest {
+message FetchMessageRequest {
   string notice_key = 1;
   string request_id = 2;
   string user = 3;
   string project = 4; 
 }
 
-message SimpleReplyResponse {
+message FetchMessageResponse {
   string message = 1;
   repeated string comments = 2;
 }
