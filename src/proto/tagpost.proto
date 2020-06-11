@@ -6,22 +6,18 @@ option java_multiple_files = true;
 option java_package = "com.google.tagpost";
 option java_outer_classname = "TagPostProto";
 
-// The response service definition.
-service Response {
-  // Sends a response
-  rpc Response (Request) returns (Reply) {}
+service TagpostService {
+  rpc SimpleReply(SimpleReplyRequest) returns (SimpleReplyResponse) {}
 }
 
-// request message 
-message Request {
+message SimpleReplyRequest {
   string notice_key = 1;
   string request_id = 2;
   string user = 3;
-  string project = 4;
+  string project = 4; 
 }
 
-// reply message 
-message Reply {
+message SimpleReplyResponse {
   string message = 1;
   repeated string comments = 2;
 }
