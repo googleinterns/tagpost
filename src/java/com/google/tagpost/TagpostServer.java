@@ -62,14 +62,4 @@ public class TagpostServer {
         server.start();
         server.blockUntilShutdown();
     }
-
-    // static class TagpostServiceImpl extends TagpostServiceGrpc.TagpostServiceImplBase {
-
-    //   @Override
-    //   public void simpleReply(SimpleReplyRequest req, StreamObserver<SimpleReplyResponse> responseObserver) {
-    //     SimpleReplyResponse response = SimpleReplyResponse.newBuilder().setMessage("Hello " + req.getRequestId()).build();
-    //     responseObserver.onNext(response);
-    //     responseObserver.onCompleted();
-    //   }
-    // }
 }
