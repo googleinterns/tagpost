@@ -15,7 +15,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     }
 
     private static FetchMessageResponse determineResponse(FetchMessageRequest req) {
-        FetchMessageResponse response = FetchMessageResponse.newBuilder().setMessage("Request received.").build();
+        FetchMessageResponse response = FetchMessageResponse.newBuilder().setMessage("Request received. request_id = " + req.getRequestId()).build();
         return response;
     }
 }

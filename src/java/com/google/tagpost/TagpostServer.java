@@ -15,6 +15,15 @@ public class TagpostServer {
 
     private Server server;
 
+    /**
+     * Main launches the server from the command line.
+     */
+    public static void main(String[] args) throws IOException, InterruptedException {
+        final TagpostServer server = new TagpostServer();
+        server.start();
+        server.blockUntilShutdown();
+    }
+
     private void start() throws IOException {
         /* The port on which the server should run */
         int port = 50053;
@@ -52,14 +61,5 @@ public class TagpostServer {
         if (server != null) {
             server.awaitTermination();
         }
-    }
-
-    /**
-     * Main launches the server from the command line.
-     */
-    public static void main(String[] args) throws IOException, InterruptedException {
-        final TagpostServer server = new TagpostServer();
-        server.start();
-        server.blockUntilShutdown();
     }
 }
