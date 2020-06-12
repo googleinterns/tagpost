@@ -9,12 +9,12 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
 
     @Override
     public void fetchMessage(FetchMessageRequest req, StreamObserver<FetchMessageResponse> responseObserver) {
-        FetchMessageResponse response = determineResponse(req);
+        FetchMessageResponse response = fetchMessageImpl(req);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
-    private static FetchMessageResponse determineResponse(FetchMessageRequest req) {
+    private static FetchMessageResponse fetchMessageImpl(FetchMessageRequest req) {
         FetchMessageResponse response = FetchMessageResponse.newBuilder().setMessage("Request received.").build();
         return response;
     }
