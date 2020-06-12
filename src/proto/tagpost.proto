@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package tagpost;
+
+option java_multiple_files = true;
+option java_package = "com.google.tagpost";
+option java_outer_classname = "TagPostProto";
+
+service TagpostService {
+  rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
+}
+
+message FetchMessageRequest {
+  string notice_key = 1;
+  string request_id = 2;
+  string user = 3;
+  string project = 4; 
+}
+
+message FetchMessageResponse {
+  string message = 1;
+  repeated string comments = 2;
+}

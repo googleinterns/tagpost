@@ -1,4 +1,4 @@
 alias(
-    name = "Hello",
-    actual = "//src/java/com/google/tagpost/hello:Hello",
+    name = "tagpost_server",
+    actual = "//src/java/com/google/tagpost:tagpost_server"
 )
