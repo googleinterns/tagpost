@@ -1,3 +1,4 @@
 /.ijwb/.blaze
 /.ijwb/.idea
 /bazel-*
+/tagpost-local-dev-key.json
