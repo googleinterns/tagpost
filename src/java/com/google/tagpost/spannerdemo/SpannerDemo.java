@@ -14,6 +14,11 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Demo program for Spanner.
+ * <p>
+ * Inserts a row containing the current user name and timestamp.
+ */
 public class SpannerDemo {
 
   public static void main(String args[]) throws SpannerException {
