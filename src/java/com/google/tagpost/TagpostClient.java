@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/** A dummy client that send a request to TagpostServer */
 public class TagpostClient {
   private static final Logger logger = Logger.getLogger(TagpostClient.class.getName());
 
