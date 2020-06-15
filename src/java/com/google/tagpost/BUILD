@@ -17,6 +17,22 @@ java_library(
 )
 
 java_binary(
+    name = "tagpost_client",
+    srcs = [
+        "TagpostClient.java",
+    ],
+    main_class = "com.google.tagpost.TagpostClient",
+    runtime_deps = [
+        "@io_grpc_grpc_java//netty",
+    ],
+    deps = [
+        "//src/proto:tagpost_java_grpc",
+        "//src/proto:tagpost_java_proto",
+        "@io_grpc_grpc_java//api",
+    ],
+)
+
+java_binary(
     name = "tagpost_server",
     srcs = [
         "TagpostServer.java",
