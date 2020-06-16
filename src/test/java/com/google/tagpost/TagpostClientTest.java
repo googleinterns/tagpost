@@ -18,7 +18,7 @@ import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 
-/** Unit tests for TagpostClient */
+/** Unit tests for {@link TagpostClient} */
 @RunWith(JUnit4.class)
 public class TagpostClientTest {
   /** Automatic graceful shutdown registered servers and channels at the end of test. */
