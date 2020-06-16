@@ -21,7 +21,7 @@ public class TagpostServerTest {
    * behaviors or state changes from the client side.
    */
   @Test
-  public void replyMessage() throws Exception {
+  public void tagpostService_replyMessage() throws Exception {
     // Generate a unique in-process server name.
     String serverName = InProcessServerBuilder.generateName();
 

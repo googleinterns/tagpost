@@ -63,7 +63,7 @@ public class TagpostClientTest {
 
   /** Call from the client against the fake server */
   @Test
-  public void messageDeliveredToServer() {
+  public void communicate_deliversMessageToServer() {
     ArgumentCaptor<FetchMessageRequest> requestCaptor =
         ArgumentCaptor.forClass(FetchMessageRequest.class);
 
