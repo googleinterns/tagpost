@@ -6,7 +6,11 @@ load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 proto_library(
     name = "tagpost_proto",
     srcs = [
-        "tagpost.proto"
+        "tagpost.proto",
+        "tagpost_rpc.proto",
+    ],
+    deps = [
+        "@com_google_protobuf//:timestamp_proto",
     ],
 )
 

@@ -8,24 +8,13 @@ option java_outer_classname = "TagPostProto";
 
 import "google/protobuf/timestamp.proto";
 
-service TagpostService {
-  // dummy rpc service
-  rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
-  // fetch all threads by primary tag
-  rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
-  // fetch all comments under one thread
-  rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
-  // fetch all comments by a set of tags
-  rpc FetchCommentsByTags(FetchCommentsByTagsRequest) returns (FetchCommentsByTagsResponse) {}
-}
-
 message Tag {
   string tag_name = 1;
 }
 
 message TagpostThread {
   int64 thread_id = 1;
-  string primary_tag = 2;
+  Tag primary_tag = 2;
 }
 
 message Comment {
@@ -36,41 +25,4 @@ message Comment {
   Tag primary_tag = 5;
   string username = 6;
   repeated Tag extra_tags = 7;
-}
-
-message FetchMessageRequest {
-  string notice_key = 1;
-  string request_id = 2;
-  string user = 3;
-  string project = 4;
-}
-
-message FetchMessageResponse {
-  string message = 1;
-  repeated string comments = 2;
-}
-
-message FetchThreadsByTagRequest{
-  Tag tag = 1;
-}
-
-message FetchThreadsByTagResponse{
-  repeated TagpostThread threads = 1;
-}
-
-message FetchCommentsUnderThreadRequest{
-  int64 thread_id = 1;
-}
-
-message FetchCommentsUnderThreadResponse{
-  repeated Comment comment = 1;
-}
-
-message FetchCommentsByTagsRequest{
-  Tag primary_tag = 1;
-  repeated Tag extra_tags = 2;
-}
-
-message FetchCommentsByTagsResponse{
-  repeated Comment comments = 1;
 }
