@@ -6,6 +6,8 @@ option java_multiple_files = true;
 option java_package = "com.google.tagpost";
 option java_outer_classname = "TagPostProto";
 
+import "google/protobuf/timestamp.proto";
+
 service TagpostService {
   // dummy rpc service
   rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
@@ -30,7 +32,7 @@ message Comment {
   int64 comment_id = 1;
   int64 thread_id = 2;
   string comment_content = 3;
-  string timestamp = 4;
+  google.protobuf.Timestamp timestamp = 4;
   Tag primary_tag = 5;
   string username = 6;
   repeated Tag extra_tags = 7;
@@ -53,7 +55,7 @@ message FetchThreadsByTagRequest{
 }
 
 message FetchThreadsByTagResponse{
-  TagpostThread thread = 1;
+  repeated TagpostThread threads = 1;
 }
 
 message FetchCommentsUnderThreadRequest{
