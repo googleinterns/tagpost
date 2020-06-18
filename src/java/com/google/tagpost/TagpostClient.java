@@ -1,8 +1,5 @@
 package com.google.tagpost;
 
-import com.google.tagpost.FetchMessageRequest;
-import com.google.tagpost.FetchMessageResponse;
-import com.google.tagpost.TagpostServiceGrpc;
 import io.grpc.Channel;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -10,11 +7,11 @@ import io.grpc.StatusRuntimeException;
 
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.google.common.flogger.FluentLogger;
 
 /** A dummy client that send a request to TagpostServer */
 public class TagpostClient {
-  private static final Logger logger = Logger.getLogger(TagpostClient.class.getName());
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub;
 
@@ -51,16 +48,16 @@ public class TagpostClient {
 
   /** Send a request to Server and get a response. */
   public void communicate(String request_id) {
-    logger.info("Will try to send request to server...");
+    logger.atInfo().log("Will try to send request to server...");
 
     FetchMessageRequest request = FetchMessageRequest.newBuilder().setRequestId(request_id).build();
     FetchMessageResponse response;
     try {
       response = blockingStub.fetchMessage(request);
     } catch (StatusRuntimeException e) {
-      logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
+      logger.atWarning().log("RPC failed: {0}", e.getStatus());
       return;
     }
-    logger.info(response.getMessage());
+    logger.atInfo().log(response.getMessage());
   }
 }

@@ -3,16 +3,15 @@ package(default_visibility = ["//visibility:public"])
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
-
 java_library(
     name = "tagpost_service",
     srcs = [
         "TagpostService.java",
     ],
     deps = [
-        "@io_grpc_grpc_java//stub",
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
+        "@io_grpc_grpc_java//stub",
     ],
 )
 
@@ -29,6 +28,8 @@ java_binary(
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
         "@io_grpc_grpc_java//api",
+        "@maven//:com_google_flogger_flogger",
+        "@maven//:com_google_flogger_flogger_system_backend",
     ],
 )
 
@@ -44,5 +45,7 @@ java_binary(
     deps = [
         "//src/java/com/google/tagpost:tagpost_service",
         "@io_grpc_grpc_java//api",
+        "@maven//:com_google_flogger_flogger",
+        "@maven//:com_google_flogger_flogger_system_backend",
     ],
 )
