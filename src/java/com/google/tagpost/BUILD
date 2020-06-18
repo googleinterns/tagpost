@@ -1,6 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@io_bazel_rules_docker//java:image.bzl", "java_image")
+load("@io_bazel_rules_docker//container:container.bzl", "container_push")
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
 java_library(
@@ -33,7 +34,7 @@ java_binary(
     ],
 )
 
-java_binary(
+java_image(
     name = "tagpost_server",
     srcs = [
         "TagpostServer.java",
@@ -48,4 +49,13 @@ java_binary(
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_flogger_flogger_system_backend",
     ],
+)
+
+container_push(
+    name = "tagpost_server_push",
+    format = "Docker",
+    image = ":tagpost_server",
+    registry = "gcr.io",
+    repository = "testing-bigtest/tagpost_server",
+    tag = "dev",
 )
