@@ -12,7 +12,7 @@ message Tag {
   string tag_name = 1;
 }
 
-message TagpostThread {
+message Thread {
   int64 thread_id = 1;
   Tag primary_tag = 2;
 }

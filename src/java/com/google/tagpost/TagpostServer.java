@@ -6,6 +6,7 @@ import io.grpc.ServerBuilder;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.lang.Thread;
 
 /** A dummy server that only manages startup/shutdown. */
 public class TagpostServer {

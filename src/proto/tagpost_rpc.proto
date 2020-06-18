@@ -36,7 +36,7 @@ message FetchThreadsByTagRequest {
 }
 
 message FetchThreadsByTagResponse {
-  repeated TagpostThread threads = 1;
+  repeated Thread threads = 1;
 }
 
 message FetchCommentsUnderThreadRequest {
