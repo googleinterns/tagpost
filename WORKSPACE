@@ -24,6 +24,7 @@ maven_install(
         "com.google.api.grpc:proto-google-cloud-pubsub-v1:0.1.24",
         "com.google.cloud:google-cloud-spanner:1.55.1",
         "com.google.cloud:google-cloud-storage:1.109.0",
+        "org.mockito:mockito-core:3.3.3",
     ] + IO_GRPC_GRPC_JAVA_ARTIFACTS,
     generate_compat_repositories = True,
     override_targets = IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS,
