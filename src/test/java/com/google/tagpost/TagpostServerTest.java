@@ -10,7 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Unit tests for TagpostServer */
+
+/** Unit tests for {@link TagpostServer} */
 @RunWith(JUnit4.class)
 public class TagpostServerTest {
   /** Automatic graceful shutdown registered servers and channels at the end of test. */
@@ -21,7 +22,7 @@ public class TagpostServerTest {
    * behaviors or state changes from the client side.
    */
   @Test
-  public void replyMessage() throws Exception {
+  public void replyMessage_success() throws Exception {
     // Generate a unique in-process server name.
     String serverName = InProcessServerBuilder.generateName();
 
