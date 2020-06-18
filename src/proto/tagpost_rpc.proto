@@ -15,8 +15,6 @@ service TagpostService {
   rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
   // fetch all comments under one thread
   rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
-  // fetch all comments by a set of tags
-  rpc FetchCommentsByTags(FetchCommentsByTagsRequest) returns (FetchCommentsByTagsResponse) {}
 }
 
 message FetchMessageRequest {
@@ -45,13 +43,4 @@ message FetchCommentsUnderThreadRequest {
 
 message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
-}
-
-message FetchCommentsByTagsRequest {
-  Tag primary_tag = 1;
-  repeated Tag extra_tags = 2;
-}
-
-message FetchCommentsByTagsResponse {
-  repeated Comment comments = 1;
 }
