@@ -7,10 +7,19 @@ proto_library(
     name = "tagpost_proto",
     srcs = [
         "tagpost.proto",
-        "tagpost_rpc.proto",
     ],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+proto_library(
+    name = "tagpost_rpc_proto",
+    srcs = [
+        "tagpost_rpc.proto",
+    ],
+    deps = [
+        ":tagpost_proto",
     ],
 )
 
@@ -18,13 +27,14 @@ java_proto_library(
     name = "tagpost_java_proto",
     deps = [
         ":tagpost_proto",
+        ":tagpost_rpc_proto",
     ],
 )
 
 java_grpc_library(
     name = "tagpost_java_grpc",
     srcs = [
-        ":tagpost_proto",
+        ":tagpost_rpc_proto",
     ],
     deps = [
         ":tagpost_java_proto",
