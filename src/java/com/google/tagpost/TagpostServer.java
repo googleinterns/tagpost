@@ -5,7 +5,6 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 import java.lang.Thread;
 
 import com.google.common.flogger.FluentLogger;
