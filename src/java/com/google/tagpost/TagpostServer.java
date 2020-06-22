@@ -5,12 +5,13 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 import java.lang.Thread;
 
 import com.google.common.flogger.FluentLogger;
 
-/** A dummy server that only manages startup/shutdown. */
+/**
+ * A gRPC server that serve the Tagpost service.
+ */
 public class TagpostServer {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
