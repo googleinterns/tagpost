@@ -1,5 +1,6 @@
 package com.google.tagpost;
 
+import com.google.tagpost.spanner.SpannerService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
@@ -27,7 +28,9 @@ public class TagpostServer {
   private void start() throws IOException {
     /* The port on which the server should run */
     int port = 50053;
-    server = ServerBuilder.forPort(port).addService(new TagpostService()).build().start();
+    TagpostService tagpostService = new TagpostService();
+    tagpostService.setDataService(new SpannerService());
+    server = ServerBuilder.forPort(port).addService(tagpostService).build().start();
     logger.atInfo().log("Server started, listening on " + port);
     Runtime.getRuntime()
         .addShutdownHook(

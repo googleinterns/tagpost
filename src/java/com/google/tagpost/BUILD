@@ -9,10 +9,13 @@ java_library(
         "TagpostService.java",
     ],
     deps = [
+        "//src/java/com/google/tagpost/spanner:data_service",
         "//src/java/com/google/tagpost/spanner:spanner_service",
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
         "@io_grpc_grpc_java//stub",
+        "@maven//:com_google_flogger_flogger",
+        "@maven//:com_google_flogger_flogger_system_backend",
     ],
 )
 
@@ -45,6 +48,7 @@ java_binary(
     ],
     deps = [
         "//src/java/com/google/tagpost:tagpost_service",
+        "//src/java/com/google/tagpost/spanner:spanner_service",
         "@io_grpc_grpc_java//api",
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_flogger_flogger_system_backend",

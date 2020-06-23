@@ -1,11 +1,19 @@
 package com.google.tagpost;
 
-import com.google.tagpost.spanner.SpannerService;
+import com.google.tagpost.spanner.*;
 import io.grpc.stub.StreamObserver;
 import java.util.List;
+import com.google.common.flogger.FluentLogger;
 
 /** Encapsulate all RPC methods of {@link TagpostServer} */
 public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplBase {
+
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+  private DataService dataService;
+
+  public void setDataService(DataService dataService) {
+    this.dataService = dataService;
+  }
 
   @Override
   public void fetchMessage(
@@ -32,28 +40,26 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     responseObserver.onCompleted();
   }
 
-  private static FetchThreadsByTagResponse fetchThreadsByTagImpl(FetchThreadsByTagRequest req) {
+  private FetchThreadsByTagResponse fetchThreadsByTagImpl(FetchThreadsByTagRequest req) {
     Tag tag = req.getTag();
-    System.out.println("Fetching all Threads with primaryTag = " + tag.getTagName());
-    SpannerService spannerService = SpannerService.create();
-    List<Thread> threadList = spannerService.getAllThreadsByTag(tag);
+    logger.atInfo().log("Fetching all Threads with primaryTag = " + tag.getTagName());
+    List<Thread> threadList = this.dataService.getAllThreadsByTag(tag);
     FetchThreadsByTagResponse response =
         FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();
     return response;
   }
 
-  private static FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
-      FetchCommentsUnderThreadRequest req) {
+  private FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
+          FetchCommentsUnderThreadRequest req) {
     long threadId = req.getThreadId();
-    System.out.println("Fetching all comments under threadID = " + threadId);
-    SpannerService spannerService = SpannerService.create();
-    List<Comment> commentList = spannerService.getAllCommentsByThreadId(threadId);
+    logger.atInfo().log("Fetching all comments under threadID = " + threadId);
+    List<Comment> commentList = this.dataService.getAllCommentsByThreadId(threadId);
     FetchCommentsUnderThreadResponse response =
         FetchCommentsUnderThreadResponse.newBuilder().addAllComment(commentList).build();
     return response;
   }
 
-  private static FetchMessageResponse fetchMessageImpl(FetchMessageRequest req) {
+  private FetchMessageResponse fetchMessageImpl(FetchMessageRequest req) {
     FetchMessageResponse response =
         FetchMessageResponse.newBuilder().setMessage("Request received.").build();
     return response;

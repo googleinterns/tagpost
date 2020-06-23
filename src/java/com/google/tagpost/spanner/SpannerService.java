@@ -10,14 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Data access and operations of Spanner */
-public class SpannerService {
+public class SpannerService implements DataService {
 
-  private static final SpannerService spannerService = new SpannerService() {};
-
-  public static SpannerService create() {
-    return spannerService;
-  }
-
+  @Override
   public List<Thread> getAllThreadsByTag(Tag tag) {
 
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
@@ -37,15 +32,7 @@ public class SpannerService {
     return threadList;
   }
 
-  private void convertResultToThreadList(List<Thread> threadList, ResultSet resultSet) {
-    while (resultSet.next()) {
-      long threadId = resultSet.getLong("ThreadID");
-      Tag primaryTag = Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build();
-      Thread thread = Thread.newBuilder().setThreadId(threadId).setPrimaryTag(primaryTag).build();
-      threadList.add(thread);
-    }
-  }
-
+  @Override
   public List<Comment> getAllCommentsByThreadId(long threadId) {
 
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
@@ -62,6 +49,15 @@ public class SpannerService {
       e.printStackTrace();
     }
     return commentList;
+  }
+
+  private void convertResultToThreadList(List<Thread> threadList, ResultSet resultSet) {
+    while (resultSet.next()) {
+      long threadId = resultSet.getLong("ThreadID");
+      Tag primaryTag = Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build();
+      Thread thread = Thread.newBuilder().setThreadId(threadId).setPrimaryTag(primaryTag).build();
+      threadList.add(thread);
+    }
   }
 
   private void convertResultToCommentList(long threadId, List<Comment> commentList, ResultSet resultSet) {
