@@ -30,7 +30,7 @@ message FetchMessageResponse {
 }
 
 message FetchThreadsByTagRequest {
-  Tag tag = 1;
+  string tag = 1;
 }
 
 message FetchThreadsByTagResponse {
