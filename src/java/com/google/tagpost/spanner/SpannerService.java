@@ -9,12 +9,10 @@ import com.google.cloud.spanner.DatabaseClient;
 import com.google.cloud.spanner.DatabaseId;
 import com.google.cloud.spanner.Statement;
 
+import com.google.common.collect.ImmutableList;
 import com.google.tagpost.Comment;
 import com.google.tagpost.Tag;
 import com.google.tagpost.Thread;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.inject.Singleton;
 
@@ -23,88 +21,78 @@ import com.google.inject.Singleton;
 public class SpannerService implements DataService {
 
   @Override
-  public List<Thread> getAllThreadsByTag(String tag) {
+  public ImmutableList<Thread> getAllThreadsByTag(String tag) {
+
+    ImmutableList<Thread> threadList;
 
     String SQLStatement = "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = @primaryTag";
+    Statement statement = Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
 
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
     Spanner spanner = spannerOptions.getService();
-    List<Thread> threadList = new ArrayList<>();
+    DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
+    DatabaseClient dbClient = spanner.getDatabaseClient(db);
 
-    try {
-      DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
-      DatabaseClient dbClient = spanner.getDatabaseClient(db);
-
-      Statement statement =
-          Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
-
-      ResultSet resultSet = dbClient.singleUse().executeQuery(statement);
-      convertResultToThreadList(threadList, resultSet);
-    } catch (Exception e) {
-      e.printStackTrace();
+    try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
+      threadList = convertResultToThreadList(resultSet);
     }
     return threadList;
   }
 
   @Override
-  public List<Comment> getAllCommentsByThreadId(long threadId) {
+  public ImmutableList<Comment> getAllCommentsByThreadId(long threadId) {
+
+    ImmutableList<Comment> commentList;
 
     String SQLStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
+    Statement statement = Statement.newBuilder(SQLStatement).bind("threadId").to(threadId).build();
 
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
     Spanner spanner = spannerOptions.getService();
-    List<Comment> commentList = new ArrayList<>();
+    DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
+    DatabaseClient dbClient = spanner.getDatabaseClient(db);
 
-    try {
-      DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
-      DatabaseClient dbClient = spanner.getDatabaseClient(db);
-
-      Statement statement =
-          Statement.newBuilder(SQLStatement).bind("threadId").to(threadId).build();
-
-      ResultSet resultSet = dbClient.singleUse().executeQuery(statement);
-      convertResultToCommentList(threadId, commentList, resultSet);
-    } catch (Exception e) {
-      e.printStackTrace();
+    try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
+      commentList = convertResultToCommentList(resultSet);
     }
     return commentList;
   }
 
-  private void convertResultToThreadList(List<Thread> threadList, ResultSet resultSet) {
+  private ImmutableList<Thread> convertResultToThreadList(ResultSet resultSet) {
+
+    ImmutableList.Builder<Thread> threadListBuilder = ImmutableList.builder();
+
     while (resultSet.next()) {
       long threadId = resultSet.getLong("ThreadID");
       Tag primaryTag = Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build();
       Thread thread = Thread.newBuilder().setThreadId(threadId).setPrimaryTag(primaryTag).build();
-      threadList.add(thread);
+      threadListBuilder.add(thread);
     }
+    return threadListBuilder.build();
   }
 
-  private void convertResultToCommentList(
-      long threadId, List<Comment> commentList, ResultSet resultSet) {
+  private ImmutableList<Comment> convertResultToCommentList(ResultSet resultSet) {
+
+    ImmutableList.Builder<Comment> commentListBuilder = ImmutableList.builder();
+
     while (resultSet.next()) {
-      long commentId = resultSet.getLong("CommentID");
-      String username = resultSet.getString("Username");
-      Timestamp timestamp = resultSet.getTimestamp("Timestamp");
-      Tag primaryTag = Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build();
-      List<Tag> extraTags = new ArrayList<>();
-      if (!resultSet.isNull("ExtraTags")) {
-        for (String tagName : resultSet.getStringList("ExtraTags")) {
-          Tag tag = Tag.newBuilder().setTagName(tagName).build();
-          extraTags.add(tag);
-        }
+      Comment.Builder comment = Comment.newBuilder();
+      comment.setThreadId(resultSet.getLong("ThreadID"));
+      comment.setCommentId(resultSet.getLong("CommentID"));
+      comment.setCommentContent(resultSet.getString("CommentContent"));
+
+      ImmutableList.Builder<Tag> extraTags = ImmutableList.builder();
+      for (String tagName : resultSet.getStringList("ExtraTags")) {
+        Tag tag = Tag.newBuilder().setTagName(tagName).build();
+        extraTags.add(tag);
       }
-      String content = resultSet.getString("CommentContent");
-      Comment comment =
-          Comment.newBuilder()
-              .setCommentId(commentId)
-              .setCommentContent(content)
-              .addAllExtraTags(extraTags)
-              .setPrimaryTag(primaryTag)
-              .setThreadId(threadId)
-              .setUsername(username)
-              .setTimestamp(timestamp.toProto())
-              .build();
-      commentList.add(comment);
+
+      comment.addAllExtraTags(extraTags.build());
+      comment.setUsername(resultSet.getString("Username"));
+      comment.setPrimaryTag(Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build());
+      comment.setTimestamp(resultSet.getTimestamp("Timestamp").toProto());
+      commentListBuilder.add(comment.build());
     }
+    return commentListBuilder.build();
   }
 }
