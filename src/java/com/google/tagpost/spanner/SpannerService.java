@@ -7,6 +7,8 @@ import com.google.cloud.spanner.ResultSet;
 import com.google.cloud.spanner.Statement;
 import com.google.cloud.spanner.DatabaseClient;
 import com.google.cloud.spanner.DatabaseId;
+import com.google.cloud.spanner.Statement;
+
 import com.google.tagpost.Comment;
 import com.google.tagpost.Tag;
 import com.google.tagpost.Thread;
@@ -23,6 +25,8 @@ public class SpannerService implements DataService {
   @Override
   public List<Thread> getAllThreadsByTag(Tag tag) {
 
+    String SQLStatement = "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = @primaryTag";
+
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
     Spanner spanner = spannerOptions.getService();
     List<Thread> threadList = new ArrayList<>();
@@ -30,9 +34,11 @@ public class SpannerService implements DataService {
     try {
       DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
       DatabaseClient dbClient = spanner.getDatabaseClient(db);
-      String query =
-          "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = '" + tag.getTagName() + "'";
-      ResultSet resultSet = dbClient.singleUse().executeQuery(Statement.of(query));
+
+      Statement statement =
+          Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag.getTagName()).build();
+
+      ResultSet resultSet = dbClient.singleUse().executeQuery(statement);
       convertResultToThreadList(threadList, resultSet);
     } catch (Exception e) {
       e.printStackTrace();
@@ -43,6 +49,8 @@ public class SpannerService implements DataService {
   @Override
   public List<Comment> getAllCommentsByThreadId(long threadId) {
 
+    String SQLStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
+
     SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
     Spanner spanner = spannerOptions.getService();
     List<Comment> commentList = new ArrayList<>();
@@ -50,8 +58,11 @@ public class SpannerService implements DataService {
     try {
       DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
       DatabaseClient dbClient = spanner.getDatabaseClient(db);
-      String query = "SELECT * FROM Comment WHERE ThreadID = " + threadId;
-      ResultSet resultSet = dbClient.singleUse().executeQuery(Statement.of(query));
+
+      Statement statement =
+          Statement.newBuilder(SQLStatement).bind("threadId").to(threadId).build();
+
+      ResultSet resultSet = dbClient.singleUse().executeQuery(statement);
       convertResultToCommentList(threadId, commentList, resultSet);
     } catch (Exception e) {
       e.printStackTrace();
