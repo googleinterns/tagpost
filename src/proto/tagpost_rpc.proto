@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package tagpost;
+
+option java_multiple_files = true;
+option java_package = "com.google.tagpost";
+option java_outer_classname = "TagPostRpcProto";
+
+import "src/proto/tagpost.proto";
+
+service TagpostService {
+  // dummy rpc service
+  rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
+  // fetch all threads by primary tag
+  rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
+  // fetch all comments under one thread
+  rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
+}
+
+message FetchMessageRequest {
+  string notice_key = 1;
+  string request_id = 2;
+  string user = 3;
+  string project = 4;
+}
+
+message FetchMessageResponse {
+  string message = 1;
+  repeated string comments = 2;
+}
+
+message FetchThreadsByTagRequest {
+  string tag = 1;
+}
+
+message FetchThreadsByTagResponse {
+  repeated Thread threads = 1;
+}
+
+message FetchCommentsUnderThreadRequest {
+  int64 thread_id = 1;
+}
+
+message FetchCommentsUnderThreadResponse {
+  repeated Comment comment = 1;
+}

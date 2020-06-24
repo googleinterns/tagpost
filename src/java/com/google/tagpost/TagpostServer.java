@@ -5,6 +5,8 @@ import io.grpc.ServerBuilder;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.lang.Thread;
+
 import com.google.common.flogger.FluentLogger;
 
 /** A dummy server that only manages startup/shutdown. */
