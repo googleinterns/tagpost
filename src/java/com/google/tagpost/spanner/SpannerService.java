@@ -20,6 +20,15 @@ import com.google.inject.Singleton;
 @Singleton
 public class SpannerService implements DataService {
 
+  private DatabaseClient dbClient;
+  private DatabaseId db;
+  private Spanner spanner;
+
+  public SpannerService() {
+    initDb();
+    dbClient = spanner.getDatabaseClient(db);
+  }
+
   @Override
   public ImmutableList<Thread> getAllThreadsByTag(String tag) {
 
@@ -27,11 +36,6 @@ public class SpannerService implements DataService {
 
     String SQLStatement = "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = @primaryTag";
     Statement statement = Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
-
-    SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
-    Spanner spanner = spannerOptions.getService();
-    DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
-    DatabaseClient dbClient = spanner.getDatabaseClient(db);
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       threadList = convertResultToThreadList(resultSet);
@@ -47,15 +51,17 @@ public class SpannerService implements DataService {
     String SQLStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
     Statement statement = Statement.newBuilder(SQLStatement).bind("threadId").to(threadId).build();
 
-    SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
-    Spanner spanner = spannerOptions.getService();
-    DatabaseId db = DatabaseId.of("testing-bigtest", "tagpost", "test");
-    DatabaseClient dbClient = spanner.getDatabaseClient(db);
-
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       commentList = convertResultToCommentList(resultSet);
     }
     return commentList;
+  }
+
+  /** Initialize database */
+  private void initDb() {
+    db = DatabaseId.of("testing-bigtest", "tagpost", "test");
+    SpannerOptions spannerOptions = SpannerOptions.newBuilder().build();
+    spanner = spannerOptions.getService();
   }
 
   private ImmutableList<Thread> convertResultToThreadList(ResultSet resultSet) {
