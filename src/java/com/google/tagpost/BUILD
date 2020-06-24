@@ -4,6 +4,16 @@ load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 
 java_library(
+    name = "tagpost_injector_module",
+    srcs = ["TagpostModule.java"],
+    deps = [
+        "//src/java/com/google/tagpost/spanner:data_service",
+        "//src/java/com/google/tagpost/spanner:spanner_service",
+        "@maven//:com_google_inject_guice",
+    ],
+)
+
+java_library(
     name = "tagpost_service",
     srcs = [
         "TagpostService.java",
@@ -16,6 +26,7 @@ java_library(
         "@io_grpc_grpc_java//stub",
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_flogger_flogger_system_backend",
+        "@maven//:com_google_inject_guice",
     ],
 )
 
@@ -47,10 +58,11 @@ java_binary(
         "@io_grpc_grpc_java//netty",
     ],
     deps = [
+        "//src/java/com/google/tagpost:tagpost_injector_module",
         "//src/java/com/google/tagpost:tagpost_service",
-        "//src/java/com/google/tagpost/spanner:spanner_service",
         "@io_grpc_grpc_java//api",
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_flogger_flogger_system_backend",
+        "@maven//:com_google_inject_guice",
     ],
 )

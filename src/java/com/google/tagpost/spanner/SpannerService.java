@@ -1,7 +1,12 @@
 package com.google.tagpost.spanner;
 
 import com.google.cloud.Timestamp;
-import com.google.cloud.spanner.*;
+import com.google.cloud.spanner.Spanner;
+import com.google.cloud.spanner.SpannerOptions;
+import com.google.cloud.spanner.ResultSet;
+import com.google.cloud.spanner.Statement;
+import com.google.cloud.spanner.DatabaseClient;
+import com.google.cloud.spanner.DatabaseId;
 import com.google.tagpost.Comment;
 import com.google.tagpost.Tag;
 import com.google.tagpost.Thread;
@@ -9,7 +14,10 @@ import com.google.tagpost.Thread;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Singleton;
+
 /** Data access and operations of Spanner */
+@Singleton
 public class SpannerService implements DataService {
 
   @Override
@@ -60,7 +68,8 @@ public class SpannerService implements DataService {
     }
   }
 
-  private void convertResultToCommentList(long threadId, List<Comment> commentList, ResultSet resultSet) {
+  private void convertResultToCommentList(
+      long threadId, List<Comment> commentList, ResultSet resultSet) {
     while (resultSet.next()) {
       long commentId = resultSet.getLong("CommentID");
       String username = resultSet.getString("Username");
