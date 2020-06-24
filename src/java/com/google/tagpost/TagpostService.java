@@ -43,8 +43,8 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   }
 
   private FetchThreadsByTagResponse fetchThreadsByTagImpl(FetchThreadsByTagRequest req) {
-    Tag tag = req.getTag();
-    logger.atInfo().log("Fetching all Threads with primaryTag = " + tag.getTagName());
+    String tag = req.getTag();
+    logger.atInfo().log("Fetching all Threads with primaryTag = " + tag);
     List<Thread> threadList = dataService.getAllThreadsByTag(tag);
     FetchThreadsByTagResponse response =
         FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();

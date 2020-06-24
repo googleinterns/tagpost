@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DataService {
 
-  List<Thread> getAllThreadsByTag(Tag tag);
+  List<Thread> getAllThreadsByTag(String tag);
 
   List<Comment> getAllCommentsByThreadId(long threadId);
 }

@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 public class SpannerService implements DataService {
 
   @Override
-  public List<Thread> getAllThreadsByTag(Tag tag) {
+  public List<Thread> getAllThreadsByTag(String tag) {
 
     String SQLStatement = "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = @primaryTag";
 
@@ -36,7 +36,7 @@ public class SpannerService implements DataService {
       DatabaseClient dbClient = spanner.getDatabaseClient(db);
 
       Statement statement =
-          Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag.getTagName()).build();
+          Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
 
       ResultSet resultSet = dbClient.singleUse().executeQuery(statement);
       convertResultToThreadList(threadList, resultSet);
