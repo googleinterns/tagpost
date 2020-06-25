@@ -15,6 +15,10 @@ service TagpostService {
   rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
   // fetch all comments under one thread
   rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
+  // add a new thread with a specified primary tag
+  rpc AddThreadWithPrimaryTag(AddThreadWithPrimaryTagRequest) returns (AddThreadWithPrimaryTagResponse) {}
+  // add a new comment under a specified thread
+  rpc AddCommentUnderThread(AddCommentUnderThreadRequest) returns (AddCommentUnderThreadResponse) {}
 }
 
 message FetchMessageRequest {
@@ -43,4 +47,29 @@ message FetchCommentsUnderThreadRequest {
 
 message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
+}
+
+message AddThreadWithPrimaryTagRequest {
+  string tag = 1;
+}
+
+message AddThreadWithPrimaryTagResponse {
+  Status status = 1;
+}
+
+message AddCommentUnderThreadRequest {
+  int64 thread_id = 1;
+  string comment_content = 3;
+  string username = 6;
+  repeated Tag extra_tags = 7;
+}
+
+message AddCommentUnderThreadResponse {
+  Status status = 1;
+}
+
+// describe status(success/fail) of a grpc request
+message Status {
+  int32 status_code = 1;
+  string status_message = 2;
 }
