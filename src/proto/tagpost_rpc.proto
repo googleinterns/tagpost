@@ -54,7 +54,7 @@ message AddThreadWithPrimaryTagRequest {
 }
 
 message AddThreadWithPrimaryTagResponse {
-  Status status = 1;
+  Thread thread = 1;
 }
 
 message AddCommentUnderThreadRequest {
@@ -65,11 +65,5 @@ message AddCommentUnderThreadRequest {
 }
 
 message AddCommentUnderThreadResponse {
-  Status status = 1;
-}
-
-// describe status(success/fail) of a grpc request
-message Status {
-  int32 status_code = 1;
-  string status_message = 2;
+  Comment comnent = 1;
 }
