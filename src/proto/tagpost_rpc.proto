@@ -59,9 +59,9 @@ message AddThreadWithPrimaryTagResponse {
 
 message AddCommentUnderThreadRequest {
   int64 thread_id = 1;
-  string comment_content = 3;
-  string username = 6;
-  repeated Tag extra_tags = 7;
+  string comment_content = 2;
+  string username = 3;
+  repeated Tag extra_tags = 4;
 }
 
 message AddCommentUnderThreadResponse {
