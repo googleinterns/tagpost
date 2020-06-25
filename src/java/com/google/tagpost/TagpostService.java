@@ -1,7 +1,11 @@
 package com.google.tagpost;
 
+import com.google.common.flogger.StackSize;
 import com.google.tagpost.spanner.DataService;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
+import io.grpc.StatusRuntimeException;
+
 import java.util.List;
 import com.google.inject.Inject;
 import com.google.common.flogger.FluentLogger;
@@ -28,8 +32,14 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   @Override
   public void fetchThreadsByTag(
       FetchThreadsByTagRequest req, StreamObserver<FetchThreadsByTagResponse> responseObserver) {
-    FetchThreadsByTagResponse response = fetchThreadsByTagImpl(req);
-    responseObserver.onNext(response);
+    try {
+      FetchThreadsByTagResponse response = fetchThreadsByTagImpl(req);
+      responseObserver.onNext(response);
+    } catch (Exception e) {
+      Status status = Status.UNKNOWN.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Fetch Threads By Tag Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
     responseObserver.onCompleted();
   }
 
@@ -37,9 +47,15 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   public void fetchCommentsUnderThread(
       FetchCommentsUnderThreadRequest req,
       StreamObserver<FetchCommentsUnderThreadResponse> responseObserver) {
-    FetchCommentsUnderThreadResponse response = fetchCommentsUnderThreadImpl(req);
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+    try {
+      FetchCommentsUnderThreadResponse response = fetchCommentsUnderThreadImpl(req);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      Status status = Status.UNKNOWN.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Fetch Comments UnderThread Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
   }
 
   private FetchThreadsByTagResponse fetchThreadsByTagImpl(FetchThreadsByTagRequest req) {
@@ -52,7 +68,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   }
 
   private FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
-          FetchCommentsUnderThreadRequest req) {
+      FetchCommentsUnderThreadRequest req) {
     long threadId = req.getThreadId();
     logger.atInfo().log("Fetching all comments under threadID = " + threadId);
     List<Comment> commentList = dataService.getAllCommentsByThreadId(threadId);

@@ -24,6 +24,7 @@ java_library(
         "//src/java/com/google/tagpost/spanner:spanner_service",
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
+        "@io_grpc_grpc_java//api",
         "@io_grpc_grpc_java//stub",
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_flogger_flogger_system_backend",
