@@ -59,12 +59,6 @@ public class TagpostServerTest {
     inProcessChannel = InProcessChannelBuilder.forName(serverName).directExecutor().build();
   }
 
-  @After
-  public void tearDown() throws Exception {
-    // stop serving requests
-    server.shutdown().awaitTermination(30, TimeUnit.SECONDS);
-  }
-
   /**
    * To test the server, make calls with a real stub using the in-process channel, and verify
    * behaviors or state changes from the client side.
