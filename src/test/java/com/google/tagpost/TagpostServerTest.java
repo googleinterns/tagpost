@@ -101,7 +101,7 @@ public class TagpostServerTest {
   @Test
   public void fetchCommentsUnderThread_success() throws Exception {
 
-    // Stub behaviour - return a list of 3 comments
+    // Stub behaviour - return a list of 2 comments
     when(spannerServiceMock.getAllCommentsByThreadId(Mockito.anyLong()))
         .thenReturn(ImmutableList.of(Comment.getDefaultInstance(), Comment.getDefaultInstance()));
 
