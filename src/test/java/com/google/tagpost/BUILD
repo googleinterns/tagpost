@@ -24,11 +24,13 @@ java_test(
     deps = [
         "//:tagpost_server",
         "//src/java/com/google/tagpost:tagpost_service",
+        "//src/java/com/google/tagpost/spanner:spanner_service",
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
         "@io_grpc_grpc_java//api",
         "@io_grpc_grpc_java//core:inprocess",
         "@io_grpc_grpc_java//stub",
         "@io_grpc_grpc_java//testing",
+        "@maven//:org_mockito_mockito_core",
     ],
 )

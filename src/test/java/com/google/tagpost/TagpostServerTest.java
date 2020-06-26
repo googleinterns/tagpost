@@ -1,6 +1,8 @@
 package com.google.tagpost;
 
+import com.google.tagpost.spanner.SpannerService;
 import io.grpc.ManagedChannel;
+import io.grpc.Server;
 import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
@@ -11,31 +13,47 @@ import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
+
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+import static org.mockito.Mockito.*;
 
 import static org.junit.Assert.assertEquals;
 
 /** Unit tests for {@link TagpostServer} */
 @RunWith(JUnit4.class)
 public class TagpostServerTest {
+
   /** Automatic graceful shutdown registered servers and channels at the end of test. */
   @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
 
+  @Rule public MockitoRule rule = MockitoJUnit.rule();
+
+  @Mock SpannerService spannerServiceMock;
+
   private ManagedChannel inProcessChannel;
+  private TagpostService tagpostService;
+  private Server server;
 
   @Before
   public void setUp() throws Exception {
+
+    tagpostService = new TagpostService(spannerServiceMock);
     // Generate a unique in-process server name.
     String serverName = InProcessServerBuilder.generateName();
 
-    // Create a server, add service, start, and register for automatic graceful shutdown.
-    grpcCleanup.register(
+    server =
         InProcessServerBuilder.forName(serverName)
             .directExecutor()
-            .addService(new TagpostService())
-            .build()
-            .start());
+            .addService(tagpostService)
+            .build();
+
+    // Create a server, add service, start, and register for automatic graceful shutdown.
+    grpcCleanup.register(server.start());
     inProcessChannel = InProcessChannelBuilder.forName(serverName).directExecutor().build();
   }
 
@@ -59,45 +77,34 @@ public class TagpostServerTest {
   @Test
   public void fetchThreadsByTag_success() throws Exception {
 
+    // Stub behaviour - return a list of 2 threads
+    when(spannerServiceMock.getAllThreadsByTag(Mockito.anyString()))
+        .thenReturn(ImmutableList.of(Thread.newBuilder().build(), Thread.newBuilder().build()));
+
     TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub =
         TagpostServiceGrpc.newBlockingStub(inProcessChannel);
 
     FetchThreadsByTagResponse reply =
-        blockingStub.fetchThreadsByTag(
-            FetchThreadsByTagRequest.newBuilder()
-                .setTag(Tag.newBuilder().setTagName("noise").build())
-                .build());
+        blockingStub.fetchThreadsByTag(FetchThreadsByTagRequest.newBuilder().build());
 
-    List<Thread> expectedThreadList = new ArrayList<>();
-    expectedThreadList.add(
-        Thread.newBuilder()
-            .setThreadId(0)
-            .setPrimaryTag(Tag.newBuilder().setTagName("noise"))
-            .build());
-    expectedThreadList.add(
-        Thread.newBuilder()
-            .setThreadId(1)
-            .setPrimaryTag(Tag.newBuilder().setTagName("noise"))
-            .build());
-
-    assertEquals(expectedThreadList, reply.getThreadsList());
+    assertEquals(2, reply.getThreadsList().size());
   }
 
   @Test
   public void fetchCommentsUnderThread_success() throws Exception {
 
+    // Stub behaviour - return a list of 2 comments
+    when(spannerServiceMock.getAllCommentsByThreadId(Mockito.anyLong()))
+        .thenReturn(ImmutableList.of(Comment.getDefaultInstance(), Comment.getDefaultInstance()));
+
     TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub =
         TagpostServiceGrpc.newBlockingStub(inProcessChannel);
 
-    FetchCommentsUnderThreadRequest req0 =
+    FetchCommentsUnderThreadRequest req =
         FetchCommentsUnderThreadRequest.newBuilder().setThreadId(0).build();
-    FetchCommentsUnderThreadRequest req1 =
-        FetchCommentsUnderThreadRequest.newBuilder().setThreadId(1).build();
 
-    FetchCommentsUnderThreadResponse reply0 = blockingStub.fetchCommentsUnderThread(req0);
-    FetchCommentsUnderThreadResponse reply1 = blockingStub.fetchCommentsUnderThread(req1);
+    FetchCommentsUnderThreadResponse reply = blockingStub.fetchCommentsUnderThread(req);
 
-    assertEquals(reply0.getCommentList().size(), 2);
-    assertEquals(reply1.getCommentList().size(), 1);
+    assertEquals(2, reply.getCommentList().size());
   }
 }
