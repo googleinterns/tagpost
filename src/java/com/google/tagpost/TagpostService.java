@@ -1,6 +1,5 @@
 package com.google.tagpost;
 
-import com.google.common.flogger.StackSize;
 import com.google.tagpost.spanner.DataService;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
