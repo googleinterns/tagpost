@@ -7,7 +7,6 @@ import io.grpc.inprocess.InProcessChannelBuilder;
 import io.grpc.inprocess.InProcessServerBuilder;
 import io.grpc.testing.GrpcCleanupRule;
 
-import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.Before;
@@ -18,9 +17,8 @@ import com.google.common.collect.ImmutableList;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import java.util.concurrent.TimeUnit;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Mockito.*;
 
@@ -33,6 +31,8 @@ public class TagpostServerTest {
   /** Automatic graceful shutdown registered servers and channels at the end of test. */
   @Rule public final GrpcCleanupRule grpcCleanup = new GrpcCleanupRule();
 
+  @Rule public MockitoRule rule = MockitoJUnit.rule();
+
   @Mock SpannerService spannerServiceMock;
 
   private ManagedChannel inProcessChannel;
@@ -42,9 +42,7 @@ public class TagpostServerTest {
   @Before
   public void setUp() throws Exception {
 
-    MockitoAnnotations.initMocks(this);
     tagpostService = new TagpostService(spannerServiceMock);
-
     // Generate a unique in-process server name.
     String serverName = InProcessServerBuilder.generateName();
 
