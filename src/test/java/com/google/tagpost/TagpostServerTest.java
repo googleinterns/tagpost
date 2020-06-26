@@ -54,7 +54,7 @@ public class TagpostServerTest {
 
     // Create a server, add service, start, and register for automatic graceful shutdown.
     grpcCleanup.register(server.start());
-    inProcessChannel = InProcessChannelBuilder.forName(serverName).directExecutor().build();
+    inProcessChannel = grpcCleanup.register(InProcessChannelBuilder.forName(serverName).directExecutor().build());
   }
 
   /**
