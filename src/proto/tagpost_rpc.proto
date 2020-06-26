@@ -51,6 +51,7 @@ message FetchCommentsUnderThreadResponse {
 
 message AddThreadWithPrimaryTagRequest {
   string tag = 1;
+  Thread thread = 2;
 }
 
 message AddThreadWithPrimaryTagResponse {
@@ -65,5 +66,5 @@ message AddCommentUnderThreadRequest {
 }
 
 message AddCommentUnderThreadResponse {
-  Comment comnent = 1;
+  Comment comment = 1;
 }
