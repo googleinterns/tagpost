@@ -19,6 +19,9 @@ java_library(
     srcs = [
         "TagpostService.java",
     ],
+    runtime_deps = [
+        "@maven//:com_google_flogger_flogger_system_backend",
+    ],
     deps = [
         "//src/java/com/google/tagpost/spanner:data_service",
         "//src/java/com/google/tagpost/spanner:spanner_service",
@@ -27,7 +30,6 @@ java_library(
         "@io_grpc_grpc_java//api",
         "@io_grpc_grpc_java//stub",
         "@maven//:com_google_flogger_flogger",
-        "@maven//:com_google_flogger_flogger_system_backend",
         "@maven//:com_google_inject_guice",
     ],
 )
@@ -40,13 +42,13 @@ java_binary(
     main_class = "com.google.tagpost.TagpostClient",
     runtime_deps = [
         "@io_grpc_grpc_java//netty",
+        "@maven//:com_google_flogger_flogger_system_backend",
     ],
     deps = [
         "//src/proto:tagpost_java_grpc",
         "//src/proto:tagpost_java_proto",
         "@io_grpc_grpc_java//api",
         "@maven//:com_google_flogger_flogger",
-        "@maven//:com_google_flogger_flogger_system_backend",
     ],
 )
 
@@ -58,13 +60,13 @@ java_image(
     main_class = "com.google.tagpost.TagpostServer",
     runtime_deps = [
         "@io_grpc_grpc_java//netty",
+        "@maven//:com_google_flogger_flogger_system_backend",
     ],
     deps = [
         "//src/java/com/google/tagpost:tagpost_injector_module",
         "//src/java/com/google/tagpost:tagpost_service",
         "@io_grpc_grpc_java//api",
         "@maven//:com_google_flogger_flogger",
-        "@maven//:com_google_flogger_flogger_system_backend",
         "@maven//:com_google_inject_guice",
     ],
 )

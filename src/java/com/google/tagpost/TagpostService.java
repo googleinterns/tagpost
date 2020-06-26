@@ -14,7 +14,7 @@ import com.google.common.flogger.FluentLogger;
 public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplBase {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-  private DataService dataService;
+  private final DataService dataService;
 
   @Inject
   public TagpostService(DataService dataService) {
@@ -35,12 +35,12 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     try {
       FetchThreadsByTagResponse response = fetchThreadsByTagImpl(req);
       responseObserver.onNext(response);
+      responseObserver.onCompleted();
     } catch (Exception e) {
-      Status status = Status.UNKNOWN.withDescription(e.getMessage());
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
       logger.atWarning().withCause(e).log("Fetch Threads By Tag Failed");
       responseObserver.onError(status.asRuntimeException());
     }
-    responseObserver.onCompleted();
   }
 
   @Override
@@ -52,7 +52,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
       responseObserver.onNext(response);
       responseObserver.onCompleted();
     } catch (Exception e) {
-      Status status = Status.UNKNOWN.withDescription(e.getMessage());
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
       logger.atWarning().withCause(e).log("Fetch Comments UnderThread Failed");
       responseObserver.onError(status.asRuntimeException());
     }
