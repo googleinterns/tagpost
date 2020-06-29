@@ -1,7 +1,12 @@
 package com.google.tagpost;
 
+
+import com.google.tagpost.TagpostModule;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +14,7 @@ import java.lang.Thread;
 
 import com.google.common.flogger.FluentLogger;
 
-/** A dummy server that only manages startup/shutdown. */
+/** A gRPC server that serve the Tagpost service. */
 public class TagpostServer {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -25,14 +30,17 @@ public class TagpostServer {
   private void start() throws IOException {
     /* The port on which the server should run */
     int port = 50053;
-    server = ServerBuilder.forPort(port).addService(new TagpostService()).build().start();
+
+    Injector injector = Guice.createInjector(new TagpostModule());
+    TagpostService tagpostService = injector.getInstance(TagpostService.class);
+
+    server = ServerBuilder.forPort(port).addService(tagpostService).build().start();
     logger.atInfo().log("Server started, listening on " + port);
     Runtime.getRuntime()
         .addShutdownHook(
             new Thread() {
               @Override
               public void run() {
-                // Use stderr here since the logger may have been reset by its JVM shutdown hook.
                 logger.atInfo().log("*** shutting down gRPC server since JVM is shutting down");
                 try {
                   TagpostServer.this.stop();

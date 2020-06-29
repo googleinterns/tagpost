@@ -26,6 +26,8 @@ maven_install(
         "com.google.cloud:google-cloud-storage:1.109.0",
         "com.google.flogger:flogger-system-backend:0.4",
         "com.google.flogger:flogger:0.4",
+        "com.google.inject:guice:4.2.2",
+        "com.google.inject.extensions:guice-testlib:4.2.2",
         "org.mockito:mockito-core:3.3.3",
     ] + IO_GRPC_GRPC_JAVA_ARTIFACTS,
     generate_compat_repositories = True,
