@@ -15,6 +15,10 @@ service TagpostService {
   rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
   // fetch all comments under one thread
   rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
+  // add a new thread with a specified primary tag
+  rpc AddThreadWithPrimaryTag(AddThreadWithPrimaryTagRequest) returns (AddThreadWithPrimaryTagResponse) {}
+  // add a new comment under a specified thread
+  rpc AddCommentUnderThread(AddCommentUnderThreadRequest) returns (AddCommentUnderThreadResponse) {}
 }
 
 message FetchMessageRequest {
@@ -43,4 +47,25 @@ message FetchCommentsUnderThreadRequest {
 
 message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
+}
+
+message AddThreadWithPrimaryTagRequest {
+  string tag = 1;
+  Thread thread = 2;
+}
+
+message AddThreadWithPrimaryTagResponse {
+  Thread thread = 1;
+}
+
+message AddCommentUnderThreadRequest {
+  /*
+  Fields required to be filled in the request:
+  thread_id, comment_content, username, extra_tags
+  */
+  Comment comment = 1;
+}
+
+message AddCommentUnderThreadResponse {
+  Comment comment = 1;
 }
