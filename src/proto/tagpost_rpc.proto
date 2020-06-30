@@ -9,28 +9,17 @@ option java_outer_classname = "TagPostRpcProto";
 import "src/proto/tagpost.proto";
 
 service TagpostService {
-  // dummy rpc service
-  rpc FetchMessage(FetchMessageRequest) returns (FetchMessageResponse) {}
   // fetch all threads by primary tag
   rpc FetchThreadsByTag(FetchThreadsByTagRequest) returns (FetchThreadsByTagResponse) {}
+
+  // add a new thread with a specified primary tag
+  rpc AddThreadWithTag(AddThreadWithTagRequest) returns (AddThreadWithTagResponse) {}
+
   // fetch all comments under one thread
   rpc FetchCommentsUnderThread(FetchCommentsUnderThreadRequest) returns (FetchCommentsUnderThreadResponse) {}
-  // add a new thread with a specified primary tag
-  rpc AddThreadWithPrimaryTag(AddThreadWithPrimaryTagRequest) returns (AddThreadWithPrimaryTagResponse) {}
+
   // add a new comment under a specified thread
   rpc AddCommentUnderThread(AddCommentUnderThreadRequest) returns (AddCommentUnderThreadResponse) {}
-}
-
-message FetchMessageRequest {
-  string notice_key = 1;
-  string request_id = 2;
-  string user = 3;
-  string project = 4;
-}
-
-message FetchMessageResponse {
-  string message = 1;
-  repeated string comments = 2;
 }
 
 message FetchThreadsByTagRequest {
@@ -41,22 +30,23 @@ message FetchThreadsByTagResponse {
   repeated Thread threads = 1;
 }
 
+message AddThreadWithTagRequest {
+  string tag = 1;
+  Thread thread = 2;
+}
+
+message AddThreadWithTagResponse {
+  Thread thread = 1;
+}
+
 message FetchCommentsUnderThreadRequest {
-  int64 thread_id = 1;
+  string thread_id = 1;
 }
 
 message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
 }
 
-message AddThreadWithPrimaryTagRequest {
-  string tag = 1;
-  Thread thread = 2;
-}
-
-message AddThreadWithPrimaryTagResponse {
-  Thread thread = 1;
-}
 
 message AddCommentUnderThreadRequest {
   /*
