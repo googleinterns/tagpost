@@ -21,14 +21,6 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   }
 
   @Override
-  public void fetchMessage(
-      FetchMessageRequest req, StreamObserver<FetchMessageResponse> responseObserver) {
-    FetchMessageResponse response = fetchMessageImpl(req);
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
-  }
-
-  @Override
   public void fetchThreadsByTag(
       FetchThreadsByTagRequest req, StreamObserver<FetchThreadsByTagResponse> responseObserver) {
     try {
@@ -43,6 +35,20 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
   }
 
   @Override
+  public void addThreadWithTag(
+      AddThreadWithTagRequest req, StreamObserver<AddThreadWithTagResponse> responseObserver) {
+    try {
+      AddThreadWithTagResponse response = addThreadWithTagImpl(req);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Add new Thread with PrimaryTag Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
+  }
+
+  @Override
   public void fetchCommentsUnderThread(
       FetchCommentsUnderThreadRequest req,
       StreamObserver<FetchCommentsUnderThreadResponse> responseObserver) {
@@ -52,7 +58,22 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
       responseObserver.onCompleted();
     } catch (Exception e) {
       Status status = Status.INTERNAL.withDescription(e.getMessage());
-      logger.atWarning().withCause(e).log("Fetch Comments UnderThread Failed");
+      logger.atWarning().withCause(e).log("Fetch Comments Under Thread Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
+  }
+
+  @Override
+  public void addCommentUnderThread(
+      AddCommentUnderThreadRequest req,
+      StreamObserver<AddCommentUnderThreadResponse> responseObserver) {
+    try {
+      AddCommentUnderThreadResponse response = addCommentUnderThreadImpl(req);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Add new Comment under Thread Failed");
       responseObserver.onError(status.asRuntimeException());
     }
   }
@@ -66,9 +87,18 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     return response;
   }
 
+  private AddThreadWithTagResponse addThreadWithTagImpl(AddThreadWithTagRequest req)
+      throws Exception {
+    logger.atInfo().log("Adding a new thread with primary tag = " + req.getTag());
+    Thread addedThread = dataService.addNewThreadWithTag(req.getTag(), req.getThread());
+    AddThreadWithTagResponse response =
+        AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
+    return response;
+  }
+
   private FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
       FetchCommentsUnderThreadRequest req) {
-    long threadId = req.getThreadId();
+    String threadId = req.getThreadId();
     logger.atInfo().log("Fetching all comments under threadID = " + threadId);
     List<Comment> commentList = dataService.getAllCommentsByThreadId(threadId);
     FetchCommentsUnderThreadResponse response =
@@ -76,7 +106,13 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     return response;
   }
 
-  private FetchMessageResponse fetchMessageImpl(FetchMessageRequest req) {
-    return FetchMessageResponse.newBuilder().setMessage("Request received.").build();
+  private AddCommentUnderThreadResponse addCommentUnderThreadImpl(AddCommentUnderThreadRequest req)
+      throws Exception {
+    logger.atInfo().log(
+        "Adding a new comment under thread with ThreadID = " + req.getComment().getThreadId());
+    Comment addedComment = dataService.addNewCommentUnderThread(req.getComment());
+    AddCommentUnderThreadResponse response =
+        AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
+    return response;
   }
 }
