@@ -90,7 +90,7 @@ public class TagpostServerTest {
 
     Thread expectedThread = Thread.newBuilder().setThreadId("00").build();
     // Stub behaviour - return a thread
-    when(spannerServiceMock.addNewThreadWithTag(Mockito.anyString(), Mockito.any()))
+    when(spannerServiceMock.addNewThreadWithTag(Mockito.any()))
         .thenReturn(expectedThread);
 
     TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub =
