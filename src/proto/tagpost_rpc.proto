@@ -31,8 +31,11 @@ message FetchThreadsByTagResponse {
 }
 
 message AddThreadWithTagRequest {
-  string tag = 1;
-  Thread thread = 2;
+  /*
+  Fields required to be filled in the request:
+  primary_tag
+  */
+  Thread thread = 1;
 }
 
 message AddThreadWithTagResponse {

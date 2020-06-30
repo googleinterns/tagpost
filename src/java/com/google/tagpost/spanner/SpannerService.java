@@ -46,13 +46,13 @@ public class SpannerService implements DataService {
   }
 
   @Override
-  public Thread addNewThreadWithTag(String primaryTag, Thread thread) throws SpannerException {
+  public Thread addNewThreadWithTag(Thread thread) throws SpannerException {
     String threadId = UUID.randomUUID().toString();
 
     Mutation mutation =
         Mutation.newInsertBuilder("Thread")
             .set("PrimaryTag")
-            .to(primaryTag)
+            .to(thread.getPrimaryTag().getTagName())
             .set("ThreadID")
             .to(threadId)
             .build();

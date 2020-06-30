@@ -89,8 +89,9 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
 
   private AddThreadWithTagResponse addThreadWithTagImpl(AddThreadWithTagRequest req)
       throws Exception {
-    logger.atInfo().log("Adding a new thread with primary tag = " + req.getTag());
-    Thread addedThread = dataService.addNewThreadWithTag(req.getTag(), req.getThread());
+    logger.atInfo().log(
+        "Adding a new thread with primary tag = " + req.getThread().getPrimaryTag().getTagName());
+    Thread addedThread = dataService.addNewThreadWithTag(req.getThread());
     AddThreadWithTagResponse response =
         AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
     return response;

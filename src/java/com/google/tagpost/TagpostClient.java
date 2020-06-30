@@ -65,7 +65,7 @@ public class TagpostClient {
         Thread.newBuilder().setPrimaryTag(Tag.newBuilder().setTagName(primaryTag).build()).build();
 
     AddThreadWithTagRequest request =
-        AddThreadWithTagRequest.newBuilder().setTag(primaryTag).setThread(thread).build();
+        AddThreadWithTagRequest.newBuilder().setThread(thread).build();
     AddThreadWithTagResponse response;
 
     try {
