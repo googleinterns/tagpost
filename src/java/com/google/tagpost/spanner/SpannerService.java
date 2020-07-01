@@ -58,8 +58,7 @@ public class SpannerService implements DataService {
             .build();
 
     dbClient.write(ImmutableList.of(mutation));
-    thread = thread.toBuilder().setThreadId(threadId).build();
-    return thread;
+    return thread.toBuilder().setThreadId(threadId).build();
   }
 
   @Override
@@ -105,8 +104,7 @@ public class SpannerService implements DataService {
     dbClient.write(ImmutableList.of(mutation));
 
     // complete commentId and timestamp fields in user specified comment
-    comment = comment.toBuilder().setTimestamp(timestamp.toProto()).setCommentId(commentId).build();
-    return comment;
+    return comment.toBuilder().setTimestamp(timestamp.toProto()).setCommentId(commentId).build();
   }
 
   /** Initialize database */
