@@ -90,8 +90,7 @@ public class TagpostServerTest {
 
     Thread expectedThread = Thread.newBuilder().setThreadId("00").build();
     // Stub behaviour - return a thread
-    when(spannerServiceMock.addNewThreadWithTag(Mockito.any()))
-        .thenReturn(expectedThread);
+    when(spannerServiceMock.addNewThreadWithTag(Mockito.any())).thenReturn(expectedThread);
 
     TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub =
         TagpostServiceGrpc.newBlockingStub(inProcessChannel);
@@ -148,5 +147,20 @@ public class TagpostServerTest {
         blockingStub.addCommentUnderThread(AddCommentUnderThreadRequest.getDefaultInstance());
 
     assertEquals(expectedComment, reply.getComment());
+  }
+
+  @Test
+  public void getTagStats_success() throws Exception {
+
+    TagStats expectedTagStats =
+        TagStats.newBuilder().putStatistics("noise", 100).putStatistics("undefined", 200).build();
+    // Stub behaviour - return a TagStats object
+    when(spannerServiceMock.getTagStats(Mockito.anyString())).thenReturn(expectedTagStats);
+
+    TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub =
+        TagpostServiceGrpc.newBlockingStub(inProcessChannel);
+    GetTagStatsResponse reply = blockingStub.getTagStats(GetTagStatsRequest.getDefaultInstance());
+
+    assertEquals(expectedTagStats, reply.getStats());
   }
 }
