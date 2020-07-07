@@ -46,7 +46,7 @@ public class SpannerService implements DataService {
   }
 
   @Override
-  public Thread addNewThreadWithTag(Thread thread) throws SpannerException {
+  public Thread addNewThreadWithTag(Thread thread) {
     String threadId = UUID.randomUUID().toString();
 
     Mutation mutation =
@@ -76,7 +76,7 @@ public class SpannerService implements DataService {
   }
 
   @Override
-  public Comment addNewCommentUnderThread(Comment comment) throws SpannerException {
+  public Comment addNewCommentUnderThread(Comment comment) {
     String commentId = UUID.randomUUID().toString();
     Timestamp timestamp = Timestamp.now();
 
