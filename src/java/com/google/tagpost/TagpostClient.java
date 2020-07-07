@@ -12,6 +12,9 @@ import com.google.common.flogger.FluentLogger;
 public class TagpostClient {
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+  static final String NOISE = "noise";
+  static final String THREAD_ID_EXAMPLE = "12bd2b80-5f47-4367-b0b3-ec0a00ddb271";
+
   private final TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub;
 
   /** Construct client for accessing Tagpost server using the existing channel. */
@@ -28,10 +31,10 @@ public class TagpostClient {
 
     try {
       TagpostClient client = new TagpostClient(channel);
-      client.requestAddNewThread("noise");
-      client.requestFetchThreads("noise");
-      client.requestAddNewComment("12bd2b80-5f47-4367-b0b3-ec0a00ddb271");
-      client.requestFetchComments("12bd2b80-5f47-4367-b0b3-ec0a00ddb271");
+      client.requestAddNewThread(NOISE);
+      client.requestFetchThreads(NOISE);
+      client.requestAddNewComment(THREAD_ID_EXAMPLE);
+      client.requestFetchComments(THREAD_ID_EXAMPLE);
     } finally {
       channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
     }
