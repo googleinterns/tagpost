@@ -71,5 +71,5 @@ message GetTagStatsRequest {
 }
 
 message GetTagStatsResponse {
-  TagStat stat = 1;
+  TagStats stats = 1;
 }

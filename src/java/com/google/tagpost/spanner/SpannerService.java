@@ -6,15 +6,19 @@ import com.google.cloud.spanner.DatabaseId;
 import com.google.cloud.spanner.Mutation;
 import com.google.cloud.spanner.ResultSet;
 import com.google.cloud.spanner.Spanner;
-import com.google.cloud.spanner.SpannerException;
 import com.google.cloud.spanner.SpannerOptions;
 import com.google.cloud.spanner.Statement;
 import com.google.common.collect.ImmutableList;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Singleton;
+import com.google.gson.Gson;
 import com.google.tagpost.Comment;
 import com.google.tagpost.Tag;
+import com.google.tagpost.TagStats;
 import com.google.tagpost.Thread;
 
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -107,6 +111,19 @@ public class SpannerService implements DataService {
     return comment.toBuilder().setTimestamp(timestamp.toProto()).setCommentId(commentId).build();
   }
 
+  @Override
+  public TagStats getTagStats(String tag) {
+    TagStats stats;
+
+    String SQLStatement = "SELECT * FROM TagStats WHERE PrimaryTag = @tag";
+    Statement statement = Statement.newBuilder(SQLStatement).bind("tag").to(tag).build();
+
+    try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
+      stats = convertResultToTagStats(resultSet);
+    }
+    return stats;
+  }
+
   /** Initialize database */
   private void initDb() {
     db = DatabaseId.of("testing-bigtest", "tagpost", "test");
@@ -150,5 +167,19 @@ public class SpannerService implements DataService {
       commentListBuilder.add(comment.build());
     }
     return commentListBuilder.build();
+  }
+
+  private TagStats convertResultToTagStats(ResultSet resultSet) {
+    TagStats.Builder stats = TagStats.newBuilder();
+    while (resultSet.next()) {
+      String jsonStats = resultSet.getString("Statistics");
+
+      // Parse a JSON string into Map
+      Type mapType = new TypeToken<Map<String, Integer>>() {}.getType();
+      Map<String, Integer> statsMap = new Gson().fromJson(jsonStats, mapType);
+
+      stats.putAllStatistics(statsMap);
+    }
+    return stats.build();
   }
 }

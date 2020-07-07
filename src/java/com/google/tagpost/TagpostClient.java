@@ -10,11 +10,10 @@ import com.google.common.flogger.FluentLogger;
 
 /** A client that send requests to TagpostServer */
 public class TagpostClient {
-  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-  static final String NOISE = "noise";
+  static final String TAG = "noise";
+  static final String PRIMARY_TAG = "testTag";
   static final String THREAD_ID_EXAMPLE = "12bd2b80-5f47-4367-b0b3-ec0a00ddb271";
-
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub;
 
   /** Construct client for accessing Tagpost server using the existing channel. */
@@ -31,10 +30,11 @@ public class TagpostClient {
 
     try {
       TagpostClient client = new TagpostClient(channel);
-      client.requestAddNewThread(NOISE);
-      client.requestFetchThreads(NOISE);
+      client.requestAddNewThread(TAG);
+      client.requestFetchThreads(TAG);
       client.requestAddNewComment(THREAD_ID_EXAMPLE);
       client.requestFetchComments(THREAD_ID_EXAMPLE);
+      client.requestGetTagStats(PRIMARY_TAG);
     } finally {
       channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
     }
@@ -128,5 +128,22 @@ public class TagpostClient {
     }
 
     logger.atInfo().log("Successfully added a new comment " + response.getComment().toString());
+  }
+
+  /** Send a request to TagpostServer to get statistics about specified tag */
+  public void requestGetTagStats(String tag) {
+    logger.atInfo().log("Client will try to send request to get tag statistics for tag = " + tag);
+
+    GetTagStatsRequest request = GetTagStatsRequest.newBuilder().setTag(tag).build();
+    GetTagStatsResponse response;
+
+    try {
+      response = blockingStub.getTagStats(request);
+    } catch (StatusRuntimeException e) {
+      logger.atWarning().log("RPC failed: {0}", e.getMessage());
+      return;
+    }
+
+    logger.atInfo().log("Successfully get tag statistics " + response.getStats().toString());
   }
 }

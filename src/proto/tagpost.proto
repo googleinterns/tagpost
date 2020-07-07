@@ -29,6 +29,6 @@ message Comment {
 
 message TagStats {
   Tag tag = 1;
-  /* a collection to store pairs of tag category and count */
-  map<string, int32> count = 2;
+  /* a collection to store pairs of tag category and corresponding count */
+  map<string, int32> statistics = 2;
 }

@@ -58,7 +58,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
       responseObserver.onCompleted();
     } catch (Exception e) {
       Status status = Status.INTERNAL.withDescription(e.getMessage());
-      logger.atWarning().withCause(e).log("Fetch Comments Under Thread Failed");
+      logger.atWarning().withCause(e).log("Fetch Comments under Thread Failed");
       responseObserver.onError(status.asRuntimeException());
     }
   }
@@ -78,13 +78,26 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     }
   }
 
+  @Override
+  public void getTagStats(
+          GetTagStatsRequest req,
+          StreamObserver<GetTagStatsResponse> responseObserver) {
+    try {
+      GetTagStatsResponse response = getTagStatsImpl(req);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Get TagStats Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
+  }
+
   private FetchThreadsByTagResponse fetchThreadsByTagImpl(FetchThreadsByTagRequest req) {
     String tag = req.getTag();
     logger.atInfo().log("Fetching all Threads with primaryTag = " + tag);
     List<Thread> threadList = dataService.getAllThreadsByTag(tag);
-    FetchThreadsByTagResponse response =
-        FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();
-    return response;
+    return FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();
   }
 
   private AddThreadWithTagResponse addThreadWithTagImpl(AddThreadWithTagRequest req)
@@ -92,9 +105,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     logger.atInfo().log(
         "Adding a new thread with primary tag = " + req.getThread().getPrimaryTag().getTagName());
     Thread addedThread = dataService.addNewThreadWithTag(req.getThread());
-    AddThreadWithTagResponse response =
-        AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
-    return response;
+    return AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
   }
 
   private FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
@@ -102,9 +113,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     String threadId = req.getThreadId();
     logger.atInfo().log("Fetching all comments under threadID = " + threadId);
     List<Comment> commentList = dataService.getAllCommentsByThreadId(threadId);
-    FetchCommentsUnderThreadResponse response =
-        FetchCommentsUnderThreadResponse.newBuilder().addAllComment(commentList).build();
-    return response;
+    return FetchCommentsUnderThreadResponse.newBuilder().addAllComment(commentList).build();
   }
 
   private AddCommentUnderThreadResponse addCommentUnderThreadImpl(AddCommentUnderThreadRequest req)
@@ -112,8 +121,13 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     logger.atInfo().log(
         "Adding a new comment under thread with ThreadID = " + req.getComment().getThreadId());
     Comment addedComment = dataService.addNewCommentUnderThread(req.getComment());
-    AddCommentUnderThreadResponse response =
-        AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
-    return response;
+    return AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
+  }
+
+  private GetTagStatsResponse getTagStatsImpl(GetTagStatsRequest req) {
+    logger.atInfo().log(
+            "Getting statistics for Tag = " + req.getTag());
+    TagStats tagStats = dataService.getTagStats(req.getTag());
+    return GetTagStatsResponse.newBuilder().setStats(tagStats).build();
   }
 }
