@@ -8,9 +8,9 @@ public interface DataService {
 
   List<Thread> getAllThreadsByTag(String tag);
 
-  Thread addNewThreadWithTag(Thread thread) throws DataException;
+  Thread addNewThreadWithTag(Thread thread);
 
   List<Comment> getAllCommentsByThreadId(String threadId);
 
-  Comment addNewCommentUnderThread(Comment comment) throws DataException;
+  Comment addNewCommentUnderThread(Comment comment);
 }
