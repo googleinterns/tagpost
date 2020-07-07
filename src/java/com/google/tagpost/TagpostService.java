@@ -82,9 +82,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     String tag = req.getTag();
     logger.atInfo().log("Fetching all Threads with primaryTag = " + tag);
     List<Thread> threadList = dataService.getAllThreadsByTag(tag);
-    FetchThreadsByTagResponse response =
-        FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();
-    return response;
+    return FetchThreadsByTagResponse.newBuilder().addAllThreads(threadList).build();
   }
 
   private AddThreadWithTagResponse addThreadWithTagImpl(AddThreadWithTagRequest req)
@@ -92,9 +90,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     logger.atInfo().log(
         "Adding a new thread with primary tag = " + req.getThread().getPrimaryTag().getTagName());
     Thread addedThread = dataService.addNewThreadWithTag(req.getThread());
-    AddThreadWithTagResponse response =
-        AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
-    return response;
+    return AddThreadWithTagResponse.newBuilder().setThread(addedThread).build();
   }
 
   private FetchCommentsUnderThreadResponse fetchCommentsUnderThreadImpl(
@@ -102,9 +98,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     String threadId = req.getThreadId();
     logger.atInfo().log("Fetching all comments under threadID = " + threadId);
     List<Comment> commentList = dataService.getAllCommentsByThreadId(threadId);
-    FetchCommentsUnderThreadResponse response =
-        FetchCommentsUnderThreadResponse.newBuilder().addAllComment(commentList).build();
-    return response;
+    return FetchCommentsUnderThreadResponse.newBuilder().addAllComment(commentList).build();
   }
 
   private AddCommentUnderThreadResponse addCommentUnderThreadImpl(AddCommentUnderThreadRequest req)
@@ -112,8 +106,6 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     logger.atInfo().log(
         "Adding a new comment under thread with ThreadID = " + req.getComment().getThreadId());
     Comment addedComment = dataService.addNewCommentUnderThread(req.getComment());
-    AddCommentUnderThreadResponse response =
-        AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
-    return response;
+    return AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
   }
 }
