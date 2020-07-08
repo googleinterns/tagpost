@@ -131,7 +131,7 @@ public class SpannerService implements DataService {
     spanner = spannerOptions.getService();
   }
 
-  private ImmutableList<Thread> convertResultToThreadList(ResultSet resultSet) {
+  private static ImmutableList<Thread> convertResultToThreadList(ResultSet resultSet) {
 
     ImmutableList.Builder<Thread> threadListBuilder = ImmutableList.builder();
 
@@ -144,7 +144,7 @@ public class SpannerService implements DataService {
     return threadListBuilder.build();
   }
 
-  private ImmutableList<Comment> convertResultToCommentList(ResultSet resultSet) {
+  private static ImmutableList<Comment> convertResultToCommentList(ResultSet resultSet) {
 
     ImmutableList.Builder<Comment> commentListBuilder = ImmutableList.builder();
 
@@ -169,7 +169,7 @@ public class SpannerService implements DataService {
     return commentListBuilder.build();
   }
 
-  private TagStats convertResultToTagStats(ResultSet resultSet) {
+  private static TagStats convertResultToTagStats(ResultSet resultSet) {
     TagStats.Builder stats = TagStats.newBuilder();
     while (resultSet.next()) {
       String jsonStats = resultSet.getString("Statistics");
