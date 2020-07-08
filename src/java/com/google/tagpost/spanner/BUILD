@@ -1,9 +1,17 @@
 package(default_visibility = ["//visibility:public"])
 
 java_library(
+    name = "data_exception",
+    srcs = ["DataException.java"],
+)
+
+java_library(
     name = "data_service",
     srcs = ["DataService.java"],
-    deps = ["//src/proto:tagpost_java_proto"],
+    deps = [
+        ":data_exception",
+        "//src/proto:tagpost_java_proto",
+    ],
 )
 
 java_library(
