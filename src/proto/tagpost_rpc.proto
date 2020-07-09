@@ -20,6 +20,9 @@ service TagpostService {
 
   // add a new comment under a specified thread
   rpc AddCommentUnderThread(AddCommentUnderThreadRequest) returns (AddCommentUnderThreadResponse) {}
+
+  // get a summary of statistics of a specified tag
+  rpc GetTagStats(GetTagStatsRequest) returns (GetTagStatsResponse) {}
 }
 
 message FetchThreadsByTagRequest {
@@ -61,4 +64,12 @@ message AddCommentUnderThreadRequest {
 
 message AddCommentUnderThreadResponse {
   Comment comment = 1;
+}
+
+message GetTagStatsRequest {
+  string tag = 1;
+}
+
+message GetTagStatsResponse {
+  TagStats stats = 1;
 }

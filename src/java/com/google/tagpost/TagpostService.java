@@ -58,7 +58,7 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
       responseObserver.onCompleted();
     } catch (Exception e) {
       Status status = Status.INTERNAL.withDescription(e.getMessage());
-      logger.atWarning().withCause(e).log("Fetch Comments Under Thread Failed");
+      logger.atWarning().withCause(e).log("Fetch Comments under Thread Failed");
       responseObserver.onError(status.asRuntimeException());
     }
   }
@@ -74,6 +74,21 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
     } catch (Exception e) {
       Status status = Status.INTERNAL.withDescription(e.getMessage());
       logger.atWarning().withCause(e).log("Add new Comment under Thread Failed");
+      responseObserver.onError(status.asRuntimeException());
+    }
+  }
+
+  @Override
+  public void getTagStats(
+          GetTagStatsRequest req,
+          StreamObserver<GetTagStatsResponse> responseObserver) {
+    try {
+      GetTagStatsResponse response = getTagStatsImpl(req);
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (Exception e) {
+      Status status = Status.INTERNAL.withDescription(e.getMessage());
+      logger.atWarning().withCause(e).log("Get TagStats Failed");
       responseObserver.onError(status.asRuntimeException());
     }
   }
@@ -107,5 +122,12 @@ public final class TagpostService extends TagpostServiceGrpc.TagpostServiceImplB
         "Adding a new comment under thread with ThreadID = " + req.getComment().getThreadId());
     Comment addedComment = dataService.addNewCommentUnderThread(req.getComment());
     return AddCommentUnderThreadResponse.newBuilder().setComment(addedComment).build();
+  }
+
+  private GetTagStatsResponse getTagStatsImpl(GetTagStatsRequest req) {
+    logger.atInfo().log(
+            "Getting statistics for Tag = " + req.getTag());
+    TagStats tagStats = dataService.getTagStats(req.getTag());
+    return GetTagStatsResponse.newBuilder().setStats(tagStats).build();
   }
 }
