@@ -17,6 +17,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "compiled_proto/src/proto/tagpost_pb",
+              "google-protobuf/google/protobuf/timestamp_pb.js"
+            ],
             "outputPath": "dist/tagpost-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
