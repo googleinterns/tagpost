@@ -2,16 +2,16 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "io_grpc_grpc_java",
-    sha256 = "6175e825c262367e9829845c161fdc9ba63672eaef41f3315ceea054dfde957e",
-    strip_prefix = "grpc-java-238c952ab6ef603fbaad09bb071dc42dd8828a18",
-    urls = ["https://github.com/grpc/grpc-java/archive/238c952ab6ef603fbaad09bb071dc42dd8828a18.tar.gz"],
+    sha256 = "86f23855c07089abf853b4cd71074b0000925f4a2351d0a37efb8d62e947c094",
+    strip_prefix = "grpc-java-1.30.2",
+    urls = ["https://github.com/grpc/grpc-java/archive/v1.30.2.tar.gz"],
 )
 
 http_archive(
     name = "rules_jvm_external",
-    sha256 = "62133c125bf4109dfd9d2af64830208356ce4ef8b165a6ef15bbff7460b35c3a",
-    strip_prefix = "rules_jvm_external-3.0",
-    url = "https://github.com/bazelbuild/rules_jvm_external/archive/3.0.zip",
+    sha256 = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab",
+    strip_prefix = "rules_jvm_external-3.3",
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/3.3.zip",
 )
 
 load("@rules_jvm_external//:defs.bzl", "maven_install")
@@ -50,6 +50,38 @@ grpc_java_repositories()
 load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
+
+# Other gRPC / protobuf rules
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_proto_grpc",
+    sha256 = "5f0f2fc0199810c65a2de148a52ba0aff14d631d4e8202f41aff6a9d590a471b",
+    strip_prefix = "rules_proto_grpc-1.0.2",
+    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/1.0.2.tar.gz"],
+)
+
+load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_repos", "rules_proto_grpc_toolchains")
+
+rules_proto_grpc_toolchains()
+
+rules_proto_grpc_repos()
+
+load("@rules_proto_grpc//nodejs:repositories.bzl", rules_proto_grpc_nodejs_repos = "nodejs_repos")
+
+rules_proto_grpc_nodejs_repos()
+
+load("@rules_proto_grpc//github.com/grpc/grpc-web:repositories.bzl", rules_proto_grpc_grpc_web_repos = "grpc_web_repos")
+
+rules_proto_grpc_grpc_web_repos()
+
+load("@io_bazel_rules_closure//closure:repositories.bzl", "rules_closure_dependencies", "rules_closure_toolchains")
+
+rules_closure_dependencies(
+    omit_com_google_protobuf = True,
+)
+
+rules_closure_toolchains()
 
 # Docker rules
 
