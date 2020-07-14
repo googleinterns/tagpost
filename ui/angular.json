@@ -19,6 +19,7 @@
           "options": {
             "allowedCommonJsDependencies": [
               "compiled_proto/src/proto/tagpost_pb",
+              "compiled_proto/src/proto/tagpost_rpc_pb",
               "google-protobuf/google/protobuf/timestamp_pb.js"
             ],
             "outputPath": "dist/tagpost-ui",
