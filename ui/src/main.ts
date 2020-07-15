@@ -20,7 +20,7 @@ if (environment.production) {
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 
-const tagpostService = new TagpostServiceClient('http://localhost:8080');
+const tagpostService = new TagpostServiceClient('http://localhost:46764');
 const fetchThreadsByTagRequest = new FetchThreadsByTagRequest();
 fetchThreadsByTagRequest.setTag('noise');
 tagpostService.fetchThreadsByTag(fetchThreadsByTagRequest, {}, (err, response) => {
