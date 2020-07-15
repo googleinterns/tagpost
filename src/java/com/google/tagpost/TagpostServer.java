@@ -1,21 +1,17 @@
 package com.google.tagpost;
 
-
-import com.google.tagpost.TagpostModule;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-
+import com.google.common.flogger.FluentLogger;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import java.lang.Thread;
-
-import com.google.common.flogger.FluentLogger;
+import java.util.concurrent.TimeUnit;
 
 /** A gRPC server that serve the Tagpost service. */
 public class TagpostServer {
+
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private Server server;
@@ -29,7 +25,11 @@ public class TagpostServer {
 
   private void start() throws IOException {
     /* The port on which the server should run */
-    int port = 50053;
+    String portStr = System.getenv("TAGPOST_GRPC_PORT");
+    if (portStr == null) {
+      throw new IllegalArgumentException("Environment variable TAGPOST_GRPC_PORT is unset");
+    }
+    int port = Integer.parseInt(portStr);
 
     Injector injector = Guice.createInjector(new TagpostModule());
     TagpostService tagpostService = injector.getInstance(TagpostService.class);
