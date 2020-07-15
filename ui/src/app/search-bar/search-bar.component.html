@@ -1,0 +1,35 @@
+<section class="hero is-link">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title">
+        TagPost
+      </h1>
+      <h2 class="subtitle">
+        Search any tag to get started
+      </h2>
+      <div class="field is-grouped">
+        <mat-chip-list #chipList aria-label="Fruit selection">
+          <mat-chip color="accent" selected *ngFor="let tag of tags" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(tag)">
+            {{tag.name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="field is-grouped">
+        <p class="control is-expanded">
+          <input class="input is-rounded" placeholder="Enter Tag here..."
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </p>
+        <p class="control">
+          <button class="button is-normal is-info is-rounded">Search</button>
+          <br>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
