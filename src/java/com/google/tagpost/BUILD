@@ -1,8 +1,9 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_docker//java:image.bzl", "java_image")
-load("@io_bazel_rules_docker//container:container.bzl", "container_push")
+load("@io_bazel_rules_docker//container:container.bzl", "container_image", "container_push")
 load("@io_grpc_grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("//:common_def.bzl", "TAGPOST_GRPC_PORT")
 
 java_library(
     name = "tagpost_injector_module",
@@ -68,6 +69,17 @@ java_image(
         "@io_grpc_grpc_java//api",
         "@maven//:com_google_flogger_flogger",
         "@maven//:com_google_inject_guice",
+    ],
+)
+
+container_image(
+    name = "tagpost_server_prod",
+    base = ":tagpost_server",
+    env = {
+        "TAGPOST_GRPC_PORT": TAGPOST_GRPC_PORT,
+    },
+    ports = [
+        TAGPOST_GRPC_PORT + "/tcp",
     ],
 )
 
