@@ -5,7 +5,7 @@ set -u
 set -o pipefail
 
 echo "Generating envoy.yaml"
-sed 's/<<<TAGPOST_GRPC_PORT>>>/'"$TAGPOST_GRPC_PORT"'/g;s/<<<TAGPOST_GRPC_WEB_PORT>>>/'"$TAGPOST_GRPC_WEB_PORT"'/g' \
+sed 's/<<<TAGPOST_GRPC_PORT>>>/'"$TAGPOST_GRPC_PORT"'/g;s/<<<TAGPOST_GRPC_WEB_PORT>>>/'"$TAGPOST_GRPC_WEB_PORT"'/g;s/<<<BACKEND_HOST>>>/'"$BACKEND_HOST"'/g' \
     /etc/envoy/envoy.template.yaml \
     > /etc/envoy/envoy.yaml
 

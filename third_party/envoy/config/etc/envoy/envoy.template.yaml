@@ -49,5 +49,5 @@ static_resources:
               - endpoint:
                   address:
                     socket_address:
-                      address: localhost
+                      address: <<<BACKEND_HOST>>>
                       port_value: <<<TAGPOST_GRPC_PORT>>>
