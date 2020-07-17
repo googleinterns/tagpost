@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {DataService} from '../data.service';
@@ -14,8 +14,7 @@ export class SearchBarComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: string[] = [
-  ];
+  tags: string[] = [];
 
   constructor(private dataService: DataService) {
   }
