@@ -1,5 +1,10 @@
 {
   "extends": "tslint:recommended",
+  "linterOptions": {
+    "exclude": [
+      "src/compiled_proto/**"
+    ]
+  },
   "rules": {
     "align": {
       "options": [
@@ -75,6 +80,9 @@
     "object-literal-key-quotes": [
       true,
       "as-needed"
+    ],
+    "ordered-imports": [
+      true
     ],
     "quotemark": [
       true,
