@@ -18,9 +18,17 @@ if (environment.production) {
 }
 
 platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+.catch(err => console.error(err));
 
-const tagpostService = new TagpostServiceClient('http://localhost:46764');
+function createGrpcClient(): TagpostServiceClient {
+  let url = new URL('/', window.location.toString()).toString();
+  if (url.endsWith('/')) {
+    url = url.substring(0, url.length - 1);
+  }
+  return new TagpostServiceClient(url);
+}
+
+const tagpostService = createGrpcClient();
 const fetchThreadsByTagRequest = new FetchThreadsByTagRequest();
 fetchThreadsByTagRequest.setTag('noise');
 tagpostService.fetchThreadsByTag(fetchThreadsByTagRequest, {}, (err, response) => {
