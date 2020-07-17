@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';
-
-// For layout demo purpose only
-export interface Tag {
-  name: string;
-}
+import {DataService} from '../data.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -14,17 +10,15 @@ export interface Tag {
 })
 
 export class SearchBarComponent implements OnInit {
-
-  visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  tags: Tag[] = [
+  tags: string[] = [
   ];
 
-  constructor() { }
+  constructor(private dataService: DataService) {
+  }
 
   ngOnInit(): void {
   }
@@ -35,7 +29,7 @@ export class SearchBarComponent implements OnInit {
 
     // Add tag
     if ((value || '').trim()) {
-      this.tags.push({name: value.trim()});
+      this.tags.push(value.trim());
     }
 
     // Reset the input value
@@ -44,11 +38,16 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  remove(tag: Tag): void {
+  remove(tag: string): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
+  }
+
+  search(): void {
+    // for now, only first tag entered is used for search
+    this.dataService.fetchThreads(this.tags[0]);
   }
 }

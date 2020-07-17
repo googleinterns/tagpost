@@ -11,7 +11,7 @@
         <mat-chip-list #chipList aria-label="Fruit selection">
           <mat-chip color="accent" selected *ngFor="let tag of tags" [selectable]="selectable"
                     [removable]="removable" (removed)="remove(tag)">
-            {{tag.name}}
+            {{tag}}
             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>
@@ -25,7 +25,7 @@
                  (matChipInputTokenEnd)="add($event)">
         </p>
         <p class="control">
-          <button class="button is-normal is-info is-rounded">Search</button>
+          <button class="button is-normal is-info is-rounded" (click)="search()">Search</button>
           <br>
         </p>
       </div>
