@@ -1,0 +1,39 @@
+<a class="button mat-raised-button is-block is-rounded is-light is-link" (click)="toggleModal()">
+  New Thread
+</a>
+<div class="modal" [ngClass]="{ 'is-active' : isModalActive }">
+  <div class="modal-background" (click)="toggleModal()"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title"> creating thread....</p>
+      <button class="delete" aria-label="close" (click)="form.reset(); toggleModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <label class="label">Tag</label>
+      <div class="field">
+        <div class="control">
+          <input class="input" [ngClass]="{'is-danger' : !form.valid && !form.pristine}" type="text"
+                 required
+                 #form="ngModel" [(ngModel)]="tagName" (ngModelChange)="clearModalData()"
+                 placeholder="Enter your tag name to create a new thread">
+          <div [hidden]="form.valid || form.pristine">
+            <p class="help is-danger">
+              This field is required
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="newThread" class="notification is-success is-light">
+        <p> New thread for <strong>{{tagName}}</strong> just added! </p>
+        <p><strong>threadId:</strong> <a href="#">{{newThread.threadId}}</a></p>
+      </div>
+      <div *ngIf="error" class="notification is-danger is-light">
+        :( Opps, we have encountered some problems.
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button mat-button is-link" [disabled]="!form.valid" (click)="addThread()">Create</button>
+      <button class="button mat-button is-light" (click)="form.reset(); toggleModal()">Cancel</button>
+    </footer>
+  </div>
+</div>
