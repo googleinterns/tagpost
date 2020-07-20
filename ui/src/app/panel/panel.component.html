@@ -29,114 +29,45 @@
           <li><a>Popular</a></li>
         </ul>
       </div>
-      <div class="box forum">
-        <!-- show some sample threads for demo purpose -->
-        <article class="media">
-          <div class="media-left">
-          </div>
-          <div class="media-content">
-            <div class="content list-forum">
-              <p class="text-content">
-                <a href="#"> Thread 1: About this thread
-                  <span class="solved" title="Solved">
+      <!-- thread panel -->
+      <ng-container *ngIf="(threadList$ | async) as threadList else notification">
+        <!-- show a list of threads -->
+        <div *ngIf="threadList.length > 0 else notfound" class="box forum">
+          <article *ngFor="let thread of threadList" class="media">
+            <div class="media-left">
+            </div>
+            <div class="media-content">
+              <div class="content list-forum">
+                <p class="text-content">
+                  <a href="#"> Thread ID: {{thread.threadId}}
+                    <span class="solved" title="Solved">
                     <i class="mdi mdi-checkbox-marked-circle"></i>
                   </span>
-                </a>
-              </p>
-              <p class="tags-content">
-                <a class="tag is-rounded is-warning">Tag</a>
-              </p>
+                  </a>
+                </p>
+                <p class="tags-content">
+                  <a class="tag is-rounded is-warning"> {{thread.primaryTag.tagName}} </a>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="media-right">
-            <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 0</span>
-          </div>
-        </article>
-        <article class="media">
-          <div class="media-left">
-          </div>
-          <div class="media-content">
-            <div class="content list-forum">
-              <p class="text-content">
-                <a href="#"> Thread 2
-                  <span class="solved" title="Solved">
-                    <i class="mdi mdi-checkbox-marked-circle"></i>
-                  </span>
-                </a>
-              </p>
-              <p class="tags-content">
-                <a class="tag is-rounded is-primary">Tag</a>
-              </p>
+            <div class="media-right">
+              <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 0</span>
             </div>
+          </article>
+        </div>
+        <!-- show notfound notification when no thread is found -->
+        <ng-template #notfound>
+          <div class="notification is-danger is-light">
+            Sorry, we could not find any thread.
           </div>
-          <div class="media-right">
-            <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 20</span>
-          </div>
-        </article>
-        <article class="media">
-          <div class="media-left">
-          </div>
-          <div class="media-content">
-            <div class="content list-forum">
-              <p class="text-content">
-                <a href="#"> Thread 3
-                  <span class="solved" title="Solved">
-                    <i class="mdi mdi-checkbox-marked-circle"></i>
-                  </span>
-                </a>
-              </p>
-              <p class="tags-content">
-                <a class="tag is-rounded is-link">Tag</a>
-              </p>
-            </div>
-          </div>
-          <div class="media-right">
-            <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 10</span>
-          </div>
-        </article>
-        <article class="media">
-          <div class="media-left">
-          </div>
-          <div class="media-content">
-            <div class="content list-forum">
-              <p class="text-content">
-                <a href="#"> Thread 4
-                  <span class="solved" title="Solved">
-                    <i class="mdi mdi-checkbox-marked-circle"></i>
-                  </span>
-                </a>
-              </p>
-              <p class="tags-content">
-                <a class="tag is-rounded is-primary">Tag</a>
-              </p>
-            </div>
-          </div>
-          <div class="media-right">
-            <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 0</span>
-          </div>
-        </article>
-        <article class="media">
-          <div class="media-left">
-          </div>
-          <div class="media-content">
-            <div class="content list-forum">
-              <p class="text-content">
-                <a href="#"> Thread 5
-                  <span class="solved" title="Solved">
-                    <i class="mdi mdi-checkbox-marked-circle"></i>
-                  </span>
-                </a>
-              </p>
-              <p class="tags-content">
-                <a class="tag is-rounded is-success">Tag</a>
-              </p>
-            </div>
-          </div>
-          <div class="media-right">
-            <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 2</span>
-          </div>
-        </article>
-      </div>
+        </ng-template>
+      </ng-container>
+      <!-- default panel -->
+      <ng-template #notification>
+        <div class="notification is-link is-light">
+          Search any tag to get started :)
+        </div>
+      </ng-template>
       <div class="box">
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
           <a class="pagination-previous">Previous</a>
