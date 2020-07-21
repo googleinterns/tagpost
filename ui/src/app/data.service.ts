@@ -30,7 +30,7 @@ export class DataService {
 
   /**
    * Fetch a list of thread with given tag name.
-   * If success, Multicast the newly fetched thread list to all thread list observers
+   * If success, Multicast the newly fetched thread list to all threadList observers
    */
   fetchThreads(tag: string): void {
     const req = new FetchThreadsByTagRequest();
@@ -48,13 +48,14 @@ export class DataService {
   /**
    * Add a new thread with given tag name.
    */
-  addThread(tag: string): Promise<Thread> {
+  addThread(tag: string, topic: string): Promise<Thread> {
     return new Promise<any>(((resolve, reject) => {
       const primaryTag = new Tag();
       primaryTag.setTagName(tag);
 
       const newThread = new Thread();
       newThread.setPrimaryTag(primaryTag);
+      newThread.setTopic(topic);
 
       const req = new AddThreadWithTagRequest();
       req.setThread(newThread);

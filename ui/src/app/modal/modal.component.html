@@ -6,34 +6,49 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title"> creating thread....</p>
-      <button class="delete" aria-label="close" (click)="form.reset(); toggleModal()"></button>
+      <button class="delete" aria-label="close" (click)="nameForm.reset(); toggleModal()"></button>
     </header>
     <section class="modal-card-body">
-      <label class="label">Tag</label>
+      <!-- tag name input field, name is required -->
       <div class="field">
         <div class="control">
-          <input class="input" [ngClass]="{'is-danger' : !form.valid && !form.pristine}" type="text"
+          <label class="label">Tag</label>
+          <input class="input" [ngClass]="{'is-danger' : !nameForm.valid && !nameForm.pristine}"
+                 type="text"
                  required
-                 #form="ngModel" [(ngModel)]="tagName" (ngModelChange)="clearModalData()"
+                 #nameForm="ngModel"
+                 [(ngModel)]="tagName"
+                 (ngModelChange)="clearModalData()"
                  placeholder="Enter your tag name to create a new thread">
-          <div [hidden]="form.valid || form.pristine">
+          <div [hidden]="nameForm.valid || nameForm.pristine">
             <p class="help is-danger">
               This field is required
             </p>
           </div>
         </div>
       </div>
+      <!-- topic input field, disabled when tag name is not provided-->
+      <div class="field">
+        <div class="control">
+          <label class="label">Topic</label>
+          <input class="input"
+                 [disabled]="!nameForm.valid"
+                 type="text"
+                 [(ngModel)]="topic"
+                 placeholder="Enter topic for your new thread">
+        </div>
+      </div>
       <div *ngIf="newThread" class="notification is-success is-light">
         <p> New thread for <strong>{{tagName}}</strong> just added! </p>
-        <p><strong>threadId:</strong> <a href="#">{{newThread.threadId}}</a></p>
+        <p><strong>threadId: </strong> <a href="#">{{newThread.threadId}}</a></p>
       </div>
       <div *ngIf="error" class="notification is-danger is-light">
         :( Opps, we have encountered some problems.
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button class="button mat-button is-link" [disabled]="!form.valid" (click)="addThread()">Create</button>
-      <button class="button mat-button is-light" (click)="form.reset(); toggleModal()">Cancel</button>
+      <button class="button mat-button is-link" [disabled]="!nameForm.valid" (click)="addThread()">Create</button>
+      <button class="button mat-button is-light" (click)="nameForm.reset(); toggleModal()">Cancel</button>
     </footer>
   </div>
 </div>

@@ -15,6 +15,7 @@ export class ModalComponent implements OnInit {
   isModalActive = false;
 
   tagName: string;
+  topic: string;
   newThread: Thread;
   error: any;
 
@@ -25,14 +26,12 @@ export class ModalComponent implements OnInit {
   }
 
   addThread(): void {
-    this.dataService.addThread(this.tagName)
+    this.dataService.addThread(this.tagName, this.topic)
       .then(thread => {
-        console.log(thread);
         this.newThread = thread;
       })
       .catch(
         err => {
-          console.log(err.message.toString);
           this.error = err.message;
         });
   }
@@ -53,5 +52,6 @@ export class ModalComponent implements OnInit {
   clearModalData(): void {
     this.newThread = undefined;
     this.error = undefined;
+    this.topic = undefined;
   }
 }
