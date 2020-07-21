@@ -1,9 +1,7 @@
 <div class="container">
   <div class="columns">
     <div class="column is-one-quarter">
-      <a class="button is-info is-block is-large is-rounded" href="#">
-        New Thread
-      </a>
+      <app-modal></app-modal>
       <br>
       <div class="box">
         <h5 class="title is-5"># TAG CATEGORIES</h5>
@@ -59,6 +57,7 @@
         <ng-template #notfound>
           <div class="notification is-danger is-light">
             Sorry, we could not find any thread.
+            <button mat-button color="primary">Clear your search and try again</button>
           </div>
         </ng-template>
       </ng-container>
