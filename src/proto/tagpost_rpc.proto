@@ -36,7 +36,7 @@ message FetchThreadsByTagResponse {
 message AddThreadWithTagRequest {
   /*
   Fields required to be filled in the request:
-  primary_tag
+  primary_tag, topic
   */
   Thread thread = 1;
 }
@@ -52,7 +52,6 @@ message FetchCommentsUnderThreadRequest {
 message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
 }
-
 
 message AddCommentUnderThreadRequest {
   /*
