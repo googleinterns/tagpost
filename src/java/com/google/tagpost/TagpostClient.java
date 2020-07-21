@@ -31,6 +31,7 @@ public class TagpostClient {
     try {
       TagpostClient client = new TagpostClient(channel);
       client.requestAddNewThread(TAG);
+      client.requestAddNewThread(PRIMARY_TAG);
       client.requestFetchThreads(TAG);
       client.requestAddNewComment(THREAD_ID_EXAMPLE);
       client.requestFetchComments(THREAD_ID_EXAMPLE);

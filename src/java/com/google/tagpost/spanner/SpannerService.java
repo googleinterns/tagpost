@@ -8,6 +8,7 @@ import com.google.cloud.spanner.ResultSet;
 import com.google.cloud.spanner.Spanner;
 import com.google.cloud.spanner.SpannerOptions;
 import com.google.cloud.spanner.Statement;
+import com.google.cloud.spanner.SpannerException;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Singleton;
@@ -53,6 +54,15 @@ public class SpannerService implements DataService {
   public Thread addNewThreadWithTag(Thread thread) {
     String threadId = UUID.randomUUID().toString();
     Timestamp timestamp = Timestamp.now();
+    String tagName = thread.getPrimaryTag().getTagName();
+
+    // Add a new tag entry in Tag table if tagName not yet existed
+    Mutation tagMutation = Mutation.newInsertBuilder("Tag").set("TagName").to(tagName).build();
+    try {
+      dbClient.write(ImmutableList.of(tagMutation));
+    } catch (SpannerException ok) {
+      // SpannerException is expected to be caught here for adding an already existed TagName
+    }
 
     Mutation mutation =
         Mutation.newInsertBuilder("Thread")
