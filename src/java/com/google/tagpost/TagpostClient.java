@@ -12,7 +12,7 @@ import com.google.common.flogger.FluentLogger;
 public class TagpostClient {
   static final String TAG = "noise";
   static final String PRIMARY_TAG = "testTag";
-  static final String THREAD_ID_EXAMPLE = "12bd2b80-5f47-4367-b0b3-ec0a00ddb271";
+  static final String THREAD_ID_EXAMPLE = "bc7e5745-c65c-4da5-9fd7-3c79d2c0f25f";
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private final TagpostServiceGrpc.TagpostServiceBlockingStub blockingStub;
 
@@ -65,7 +65,10 @@ public class TagpostClient {
         "Client will try to send request to add a new thread with PrimaryTag = " + primaryTag);
 
     Thread thread =
-        Thread.newBuilder().setPrimaryTag(Tag.newBuilder().setTagName(primaryTag).build()).build();
+        Thread.newBuilder()
+            .setTopic("This is a default thread topic.")
+            .setPrimaryTag(Tag.newBuilder().setTagName(primaryTag).build())
+            .build();
 
     AddThreadWithTagRequest request =
         AddThreadWithTagRequest.newBuilder().setThread(thread).build();

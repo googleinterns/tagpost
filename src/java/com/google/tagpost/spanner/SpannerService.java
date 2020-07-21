@@ -52,6 +52,7 @@ public class SpannerService implements DataService {
   @Override
   public Thread addNewThreadWithTag(Thread thread) {
     String threadId = UUID.randomUUID().toString();
+    Timestamp timestamp = Timestamp.now();
 
     Mutation mutation =
         Mutation.newInsertBuilder("Thread")
@@ -59,6 +60,10 @@ public class SpannerService implements DataService {
             .to(thread.getPrimaryTag().getTagName())
             .set("ThreadID")
             .to(threadId)
+            .set("Topic")
+            .to(thread.getTopic())
+            .set("Timestamp")
+            .to(timestamp)
             .build();
 
     dbClient.write(ImmutableList.of(mutation));

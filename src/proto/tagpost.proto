@@ -15,6 +15,8 @@ message Tag {
 message Thread {
   string thread_id = 1;
   Tag primary_tag = 2;
+  string topic = 3;
+  google.protobuf.Timestamp timestamp = 4;
 }
 
 message Comment {

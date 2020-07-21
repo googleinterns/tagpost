@@ -53,7 +53,6 @@ message FetchCommentsUnderThreadResponse {
   repeated Comment comment = 1;
 }
 
-
 message AddCommentUnderThreadRequest {
   /*
   Fields required to be filled in the request:
