@@ -2,15 +2,15 @@ import {Injectable} from '@angular/core';
 
 import {Observable, Subject} from 'rxjs';
 
-import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
+import {Tag, Thread} from '../../compiled_proto/src/proto/tagpost_pb';
+import {TagpostServiceClient} from '../../compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
   AddThreadWithTagResponse,
   FetchThreadsByTagRequest,
   FetchThreadsByTagResponse
-} from 'compiled_proto/src/proto/tagpost_rpc_pb';
-import {Tag, Thread} from '../compiled_proto/src/proto/tagpost_pb';
-import {environment} from '../environments/environment';
+} from '../../compiled_proto/src/proto/tagpost_rpc_pb';
+import {environment} from '../../environments/environment';
 
 /**
  * A data service that communicate with backend services.
