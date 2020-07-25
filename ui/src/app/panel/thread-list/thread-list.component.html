@@ -1,0 +1,58 @@
+<!-- thread panel -->
+<ng-container *ngIf="(threadList$ | async) as threadList else notification">
+  <div *ngIf="threadList.length > 0 else notfound">
+    <!-- show a list of threads -->
+    <div class="box" *ngFor="let thread of threadList">
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <div>
+              <a [routerLink]="['/thread', thread.getThreadId()]">
+                <p style="font-size: 1.25em; font-family: 'Nunito', sans-serif;"><strong>{{thread.getTopic()}}</strong>
+                </p>
+              </a>
+              <p class="heading">Created At: {{convertTimestamp(thread.getTimestamp())}}</p>
+            </div>
+          </div>
+          <div class="level-item">
+            <div>
+              <mat-chip-list class="example-chip">
+                <div mat-chip class="tag is-primary is-light">
+                  {{thread.getPrimaryTag().getTagName()}}
+                </div>
+                <!-- placeholder for extra tags -->
+                <div mat-chip class="tag is-warning is-light">
+                  extra-tag1
+                </div>
+                <div mat-chip class="tag is-info is-light">
+                  more-extra-tags
+                </div>
+              </mat-chip-list>
+              <br>
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item has-text-centered">
+            <div>
+              <!-- placeholder for comment count -->
+              <p class="heading">Comments</p>
+              <p class="title" style="font-size: 1.25em; color:#ADD8E6">123</p>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</ng-container>
+<ng-template #notification>
+  <div class="notification is-link is-light">
+    Search any tag to get started :)
+  </div>
+</ng-template>
+<ng-template #notfound>
+  <div class="notification is-danger is-light">
+    Sorry, we could not find any thread.
+    <button mat-button color="primary">Clear your search and try again</button>
+  </div>
+</ng-template>
