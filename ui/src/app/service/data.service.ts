@@ -40,7 +40,7 @@ export class DataService {
         console.error(err);
       }
       if (response) {
-        this.threadListSource.next(response.toObject().threadsList);
+        this.threadListSource.next(response.getThreadsList());
       }
     });
   }
