@@ -20,7 +20,6 @@ export class ThreadListComponent implements OnInit {
     this.threadList$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.selectedId = +params.get('id');
-        console.log(this.dataService.threadList);
         return this.dataService.threadList;
       })
     );
