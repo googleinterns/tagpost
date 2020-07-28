@@ -12,6 +12,9 @@ import {UtilsService} from '../../service/utils.service';
   templateUrl: './thread-detail.component.html',
   styleUrls: ['./thread-detail.component.sass']
 })
+/**
+ * A component to display all comments under thread and TagStats of primaryTag
+ */
 export class ThreadDetailComponent implements OnInit {
   commentList$: Observable<any[]>;
 
@@ -24,8 +27,6 @@ export class ThreadDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.dataService.fetchComments(this.route.snapshot.params.id);
-    // this.commentList$ = this.dataService.commentList;
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {
         this.dataService.fetchComments(this.route.snapshot.params.id);
@@ -33,5 +34,4 @@ export class ThreadDetailComponent implements OnInit {
       })
     );
   }
-
 }
