@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {DataService} from '../../service/data.service';
+import {UtilsService} from '../../service/utils.service';
 
 @Component({
   templateUrl: './thread-list.component.html',
@@ -13,7 +14,8 @@ export class ThreadListComponent implements OnInit {
   selectedId: number;
 
   constructor(private dataService: DataService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private utils: UtilsService) {
   }
 
   ngOnInit(): void {
@@ -23,14 +25,5 @@ export class ThreadListComponent implements OnInit {
         return this.dataService.threadList;
       })
     );
-  }
-
-  /**
-   * Convert proto timestamp to readable string
-   */
-  private convertTimestamp(timestamp: any): string {
-    const date = new Date(timestamp.getSeconds() * 1000 + timestamp.getNanos() / 1000);
-    const month = date.toLocaleString('default', {month: 'long'});
-    return month + ' ' + date.getUTCDate() + ' ' + date.getUTCHours() + ':' + date.getUTCMinutes();
   }
 }

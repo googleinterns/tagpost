@@ -5,79 +5,52 @@
   </div>
 </article>
 
-<!-- Main container-->
-<nav class="level">
-  <!-- Left side -->
-  <div class="level-left">
-    <div class="level-item">
-      <p class="subtitle is-5">
-        <strong>123</strong> Comments
-      </p>
-    </div>
-  </div>
-
-  <!-- Right side -->
-  <div class="level-right">
-    <p class="level-item">
-      <a style="font-family: 'Nunito', sans-serif"
-         class="button mat-raised-button is-block is-rounded is-light is-link">
-        New Comment
-      </a>
-    </p>
-  </div>
-</nav>
-<br>
 <!-- Show a list of comments under thread -->
-<!-- Placeholder for comment  -->
-<article class="media">
-  <figure class="media-left">
-  </figure>
-  <div class="media-content">
-    <div class="content">
-      <p>
-        <strong>Barbara Middleton</strong>
-        <br>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non.
-        Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
-        <br>
-        <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
+<div *ngIf="(commentList$ | async) as commentList">
+  <!-- Main container-->
+  <nav class="level">
+    <!-- Left side: comment count-->
+    <div class="level-left">
+      <div class="level-item">
+        <p class="subtitle is-5">
+          <strong>{{commentList.length}}</strong> Comments
+        </p>
+      </div>
+    </div>
+    <!-- Right side: new comment button-->
+    <div class="level-right">
+      <p class="level-item">
+        <a id="new-comment-button" class="button mat-raised-button is-block is-rounded is-light is-link">
+          New Comment
+        </a>
       </p>
     </div>
-  </div>
-</article>
-<article class="media">
-  <figure class="media-left">
-  </figure>
-  <div class="media-content">
-    <div class="content">
-      <p>
-        <strong>Barbara Middleton</strong>
+  </nav>
+  <br>
+  <!-- comment media block-->
+  <article class="media" *ngFor="let comment of commentList">
+    <div class="media-content">
+      <div class="content">
+        <div class="container">
+          <strong id="username">{{comment.getUsername()}}</strong>
+          <div id="comment-created-time" class="heading">
+            Posted: {{this.utils.convertTimestamp(comment.getTimestamp())}}</div>
+        </div>
+        {{comment.getCommentContent()}}
         <br>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non.
-        Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
-        <br>
-        <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
-      </p>
+      </div>
+      <!-- show a list of extra tags -->
+      <mat-chip-list class="example-chip">
+        <div mat-chip class="tag is-primary is-light is-small" *ngFor="let tag of comment.getExtraTagsList()">
+          {{tag}}
+        </div>
+      </mat-chip-list>
     </div>
-  </div>
-</article>
-<article class="media">
-  <figure class="media-left">
-  </figure>
-  <div class="media-content">
-    <div class="content">
-      <p>
-        <strong>Barbara Middleton</strong>
-        <br>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non.
-        Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
-        <br>
-        <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
-      </p>
-    </div>
-  </div>
-</article>
+    <br>
+  </article>
+</div>
 <br>
+
 <!-- Input field for adding new comment   -->
 <div class="box">
   <article class="media">

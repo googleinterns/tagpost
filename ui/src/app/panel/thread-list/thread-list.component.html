@@ -8,10 +8,10 @@
           <div class="level-item">
             <div>
               <a [routerLink]="['/thread', thread.getThreadId()]">
-                <p style="font-size: 1.25em; font-family: 'Nunito', sans-serif;"><strong>{{thread.getTopic()}}</strong>
+                <p id="topic"><strong>{{thread.getTopic()}}</strong>
                 </p>
               </a>
-              <p class="heading">Created At: {{convertTimestamp(thread.getTimestamp())}}</p>
+              <p class="heading">Created At: {{this.utils.convertTimestamp(thread.getTimestamp())}}</p>
             </div>
           </div>
           <div class="level-item">
