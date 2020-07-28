@@ -6,7 +6,7 @@ import {Tag, Thread} from '../../compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from '../../compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
-  AddThreadWithTagResponse,
+  AddThreadWithTagResponse, FetchCommentsUnderThreadRequest,
   FetchThreadsByTagRequest,
   FetchThreadsByTagResponse
 } from '../../compiled_proto/src/proto/tagpost_rpc_pb';
@@ -23,6 +23,9 @@ export class DataService {
 
   private threadListSource = new Subject<any>();
   public readonly threadList: Observable<any> = this.threadListSource.asObservable();
+
+  private commentListSource = new Subject<any>();
+  public readonly commentList: Observable<any> = this.commentListSource.asObservable();
 
   constructor() {
     this.client = new TagpostServiceClient(environment.apiProxy);
@@ -70,5 +73,22 @@ export class DataService {
         }
       });
     }));
+  }
+
+  /**
+   * Fetch a list of comments with given threadId.
+   * If success, Multicast the newly fetched comment list to all commentList observers
+   */
+  fetchComments(threadId: string): void {
+    const req = new FetchCommentsUnderThreadRequest();
+    req.setThreadId(threadId);
+    this.client.fetchCommentsUnderThread(req, {}, (err, response) => {
+      if (err) {
+        console.error(err.code, err.message);
+      }
+      if (response) {
+        this.commentListSource.next(response.getCommentList());
+      }
+    });
   }
 }
