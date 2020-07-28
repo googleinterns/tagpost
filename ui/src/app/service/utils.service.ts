@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ import { Injectable } from '@angular/core';
  */
 export class UtilsService {
 
-  constructor() { }
+  constructor() {
+  }
 
   /**
    * Convert proto timestamp to readable string
