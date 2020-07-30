@@ -41,7 +41,7 @@ public class SpannerService implements DataService {
 
     ImmutableList<Thread> threadList;
 
-    String SQLStatement = "SELECT ThreadID, PrimaryTag FROM Thread WHERE PrimaryTag = @primaryTag";
+    String SQLStatement = "SELECT * FROM Thread WHERE PrimaryTag = @primaryTag";
     Statement statement = Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
@@ -151,10 +151,12 @@ public class SpannerService implements DataService {
     ImmutableList.Builder<Thread> threadListBuilder = ImmutableList.builder();
 
     while (resultSet.next()) {
-      String threadId = resultSet.getString("ThreadID");
-      Tag primaryTag = Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build();
-      Thread thread = Thread.newBuilder().setThreadId(threadId).setPrimaryTag(primaryTag).build();
-      threadListBuilder.add(thread);
+      Thread.Builder thread = Thread.newBuilder();
+      thread.setThreadId(resultSet.getString("ThreadID"));
+      thread.setPrimaryTag(Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build());
+      thread.setTopic(resultSet.getString("Topic"));
+      thread.setTimestamp(resultSet.getTimestamp("Timestamp").toProto());
+      threadListBuilder.add(thread.build());
     }
     return threadListBuilder.build();
   }
