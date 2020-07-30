@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ThreadListComponent} from './thread-list.component';
+import {ThreadListComponent} from 'app/panel/thread-list/thread-list.component';
 
 describe('ThreadListComponent', () => {
   let component: ThreadListComponent;

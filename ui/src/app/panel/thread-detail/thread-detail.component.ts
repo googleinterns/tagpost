@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
-import {DataService} from '../../service/data.service';
-import {UtilsService} from '../../service/utils.service';
+import {DataService} from 'app/service/data.service';
+import {UtilsService} from 'app/service/utils.service';
 
 @Component({
   selector: 'app-thread-detail',

@@ -6,7 +6,8 @@ import {Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
-  AddThreadWithTagResponse, FetchCommentsUnderThreadRequest,
+  AddThreadWithTagResponse,
+  FetchCommentsUnderThreadRequest,
   FetchThreadsByTagRequest,
   FetchThreadsByTagResponse
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
