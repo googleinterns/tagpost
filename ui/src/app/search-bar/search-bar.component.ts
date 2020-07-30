@@ -2,7 +2,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component, OnInit} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Router} from '@angular/router';
-import {DataService} from '../service/data.service';
+import {DataService} from 'app/service/data.service';
 
 @Component({
   selector: 'app-search-bar',

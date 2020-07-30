@@ -8,15 +8,15 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {IonicModule} from '@ionic/angular';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {GoogleChartModule} from './google-chart/google-chart.module';
-import {ModalComponent} from './panel/modal/modal.component';
-import {PanelComponent} from './panel/panel.component';
-import {ThreadDetailComponent} from './panel/thread-detail/thread-detail.component';
-import {ThreadListComponent} from './panel/thread-list/thread-list.component';
-import {SearchBarComponent} from './search-bar/search-bar.component';
-import {ToolBarComponent} from './tool-bar/tool-bar.component';
+import {AppRoutingModule} from 'app/app-routing.module';
+import {AppComponent} from 'app/app.component';
+import {GoogleChartModule} from 'app/google-chart/google-chart.module';
+import {ModalComponent} from 'app/panel/modal/modal.component';
+import {PanelComponent} from 'app/panel/panel.component';
+import {ThreadDetailComponent} from 'app/panel/thread-detail/thread-detail.component';
+import {ThreadListComponent} from 'app/panel/thread-list/thread-list.component';
+import {SearchBarComponent} from 'app/search-bar/search-bar.component';
+import {ToolBarComponent} from 'app/tool-bar/tool-bar.component';
 
 @NgModule({
   declarations: [
