@@ -7,81 +7,27 @@
         <h5 class="title is-5"># TAG CATEGORIES</h5>
         <!-- placeholder for demo purpose -->
         <div class="tags">
-          <a class="tag is-rounded is-medium is-primary">tag</a>
-          <a class="tag is-rounded is-medium is-success">tag</a>
-          <a class="tag is-rounded is-medium is-warning">tag</a>
-          <a class="tag is-rounded is-medium is-danger">tag</a>
-          <a class="tag is-rounded is-medium is-link">tag</a>
-          <a class="tag is-rounded is-medium is-success">tag</a>
-          <a class="tag is-rounded is-medium is-info">tag</a>
-          <a class="tag is-rounded is-medium is-success">tag</a>
-          <a class="tag is-rounded is-medium is-dark">tag</a>
+          <a class="tag is-light is-medium is-primary">tag</a>
+          <a class="tag is-light is-medium is-success">tag</a>
+          <a class="tag is-light is-medium is-warning">tag</a>
+          <a class="tag is-light is-medium is-danger">tag</a>
+          <a class="tag is-light is-medium is-link">tag</a>
+          <a class="tag is-light is-medium is-success">tag</a>
+          <a class="tag is-light is-medium is-info">tag</a>
+          <a class="tag is-light is-medium is-success">tag</a>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="tabs">
+      <!-- placeholder for breadcrumb -->
+      <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
-          <li class="is-active"><a>All</a></li>
-          <li><a>New</a></li>
-          <li><a>Popular</a></li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Threads</a></li>
+          <li class="is-active"><a href="#" aria-current="page">ThreadId:</a></li>
         </ul>
-      </div>
-      <!-- thread panel -->
-      <ng-container *ngIf="(threadList$ | async) as threadList else notification">
-        <!-- show a list of threads -->
-        <div *ngIf="threadList.length > 0 else notfound" class="box forum">
-          <article *ngFor="let thread of threadList" class="media">
-            <div class="media-left">
-            </div>
-            <div class="media-content">
-              <div class="content list-forum">
-                <p class="text-content">
-                  <a href="#"> Thread ID: {{thread.threadId}}
-                    <span class="solved" title="Solved">
-                    <i class="mdi mdi-checkbox-marked-circle"></i>
-                  </span>
-                  </a>
-                </p>
-                <p class="tags-content">
-                  <a class="tag is-rounded is-warning"> {{thread.primaryTag.tagName}} </a>
-                </p>
-              </div>
-            </div>
-            <div class="media-right">
-              <span class="has-text-grey-light"><ion-icon name="chatbubble-ellipses-outline"></ion-icon> 0</span>
-            </div>
-          </article>
-        </div>
-        <!-- show notfound notification when no thread is found -->
-        <ng-template #notfound>
-          <div class="notification is-danger is-light">
-            Sorry, we could not find any thread.
-            <button mat-button color="primary">Clear your search and try again</button>
-          </div>
-        </ng-template>
-      </ng-container>
-      <!-- default panel -->
-      <ng-template #notification>
-        <div class="notification is-link is-light">
-          Search any tag to get started :)
-        </div>
-      </ng-template>
-      <div class="box">
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <a class="pagination-previous">Previous</a>
-          <a class="pagination-next">Next page</a>
-          <ul class="pagination-list">
-            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-            <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-          </ul>
-        </nav>
-      </div>
+      </nav>
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

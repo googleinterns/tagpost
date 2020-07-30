@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {Component, OnInit} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
-import {DataService} from '../data.service';
+import {Router} from '@angular/router';
+import {DataService} from 'app/service/data.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -16,7 +17,8 @@ export class SearchBarComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   tags: string[] = [];
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -48,5 +50,6 @@ export class SearchBarComponent implements OnInit {
   search(): void {
     // for now, only first tag entered is used for search
     this.dataService.fetchThreads(this.tags[0]);
+    this.router.navigate(['/threads']);
   }
 }

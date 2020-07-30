@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Thread} from '../../compiled_proto/src/proto/tagpost_pb';
-import {DataService} from '../data.service';
+import {DataService} from 'app/service/data.service';
+import {Thread} from 'compiled_proto/src/proto/tagpost_pb';
 
 /**
  * A Modal component that allow user to enter a tag name string and create a new thread with user specified tag name.

@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-
-import {DataService} from '../data.service';
 
 @Component({
   selector: 'app-panel',
@@ -9,10 +6,8 @@ import {DataService} from '../data.service';
   styleUrls: ['./panel.component.sass']
 })
 export class PanelComponent implements OnInit {
-  threadList$: Observable<any>;
 
-  constructor(private dataService: DataService) {
-    this.threadList$ = dataService.threadList;
+  constructor() {
   }
 
   ngOnInit(): void {
