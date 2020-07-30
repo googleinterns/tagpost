@@ -1,6 +1,6 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PanelComponent} from './panel.component';
+import {PanelComponent} from 'app/panel/panel.component';
 
 describe('PanelComponent', () => {
   let component: PanelComponent;

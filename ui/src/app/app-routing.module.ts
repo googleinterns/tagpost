@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ThreadDetailComponent} from './panel/thread-detail/thread-detail.component';
-import {ThreadListComponent} from './panel/thread-list/thread-list.component';
+import {ThreadDetailComponent} from 'app/panel/thread-detail/thread-detail.component';
+import {ThreadListComponent} from 'app/panel/thread-list/thread-list.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/threads', pathMatch: 'full'},
