@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 import {DataService} from 'app/service/data.service';
-import {UtilsService} from 'app/service/utils.service';
+import {convertTimestamp} from 'app/service/utils';
 
 @Component({
   selector: 'app-thread-detail',
@@ -17,12 +17,12 @@ import {UtilsService} from 'app/service/utils.service';
  */
 export class ThreadDetailComponent implements OnInit {
   commentList$: Observable<any[]>;
+  convertTimestamp = convertTimestamp;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService,
-    private utils: UtilsService
+    private dataService: DataService
   ) {
   }
 
