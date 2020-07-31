@@ -6,12 +6,12 @@
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <div>
+            <div class="thread">
               <a [routerLink]="['/thread', thread.getThreadId()]">
-                <p id="topic"><strong>{{thread.getTopic()}}</strong>
+                <p><strong>{{thread.getTopic()}}</strong>
                 </p>
               </a>
-              <p class="heading">Created At: {{this.utils.convertTimestamp(thread.getTimestamp())}}</p>
+              <p class="heading">Created At: {{convertTimestamp(thread.getTimestamp())}}</p>
             </div>
           </div>
           <div class="level-item">

@@ -20,8 +20,8 @@
     <!-- Right side: new comment button-->
     <div class="level-right">
       <p class="level-item">
-        <a id="new-comment-button" class="button mat-raised-button is-block is-rounded is-light is-link">
-          New Comment
+        <a class="button mat-raised-button is-block is-rounded is-light is-link">
+          <span class="new-common-button"> New Comment </span>
         </a>
       </p>
     </div>
@@ -32,9 +32,9 @@
     <div class="media-content">
       <div class="content">
         <div class="container">
-          <strong id="username">{{comment.getUsername()}}</strong>
-          <div id="comment-created-time" class="heading">
-            Posted: {{this.utils.convertTimestamp(comment.getTimestamp())}}</div>
+          <strong class="username">{{comment.getUsername()}}</strong>
+          <div class="comment-created-time" class="heading">
+            Posted: {{convertTimestamp(comment.getTimestamp())}}</div>
         </div>
         {{comment.getCommentContent()}}
         <br>
