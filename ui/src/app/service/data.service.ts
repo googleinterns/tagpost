@@ -37,6 +37,9 @@ export class DataService {
    * If success, Multicast the newly fetched thread list to all threadList observers
    */
   fetchThreads(tag: string): void {
+    // clear threadListSource before fetching threads
+    this.clearThreadList();
+
     const req = new FetchThreadsByTagRequest();
     req.setTag(tag);
     this.client.fetchThreadsByTag(req, {}, (err, response: FetchThreadsByTagResponse) => {
@@ -91,5 +94,9 @@ export class DataService {
         this.commentListSource.next(response.getCommentList());
       }
     });
+  }
+
+  clearThreadList(): void {
+    this.threadListSource.next();
   }
 }

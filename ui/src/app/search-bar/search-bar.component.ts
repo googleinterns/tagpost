@@ -46,6 +46,10 @@ export class SearchBarComponent implements OnInit {
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
+
+    if (this.tags.length === 0) {
+      this.dataService.clearThreadList();
+    }
   }
 
   search(): void {
