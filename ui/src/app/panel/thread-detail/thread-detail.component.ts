@@ -6,6 +6,7 @@ import {switchMap} from 'rxjs/operators';
 
 import {DataService} from 'app/service/data.service';
 import {convertTimestamp} from 'app/service/utils';
+import {Comment} from 'compiled_proto/src/proto/tagpost_pb';
 
 @Component({
   selector: 'app-thread-detail',
@@ -16,7 +17,7 @@ import {convertTimestamp} from 'app/service/utils';
  * A component to display all comments under thread and TagStats of primaryTag
  */
 export class ThreadDetailComponent implements OnInit {
-  commentList$: Observable<any[]>;
+  commentList$: Observable<Array<Comment>>;
   convertTimestamp = convertTimestamp;
 
   constructor(

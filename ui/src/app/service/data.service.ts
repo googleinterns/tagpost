@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {Observable, Subject} from 'rxjs';
 
-import {Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
+import {Comment, Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
@@ -22,11 +22,11 @@ import {environment} from 'environments/environment';
 export class DataService {
   private client: TagpostServiceClient;
 
-  private threadListSource = new Subject<any>();
-  public readonly threadList: Observable<any> = this.threadListSource.asObservable();
+  private threadListSource = new Subject<Array<Thread>>();
+  public readonly threadList: Observable<Array<Thread>> = this.threadListSource.asObservable();
 
-  private commentListSource = new Subject<any>();
-  public readonly commentList: Observable<any> = this.commentListSource.asObservable();
+  private commentListSource = new Subject<Array<Comment>>();
+  public readonly commentList: Observable<Array<Comment>> = this.commentListSource.asObservable();
 
   constructor() {
     this.client = new TagpostServiceClient(environment.apiProxy);
@@ -53,7 +53,7 @@ export class DataService {
    * Add a new thread with given tag name.
    */
   addThread(tag: string, topic: string): Promise<Thread> {
-    return new Promise<any>(((resolve, reject) => {
+    return new Promise<Thread>(((resolve, reject) => {
       const primaryTag = new Tag();
       primaryTag.setTagName(tag);
 
@@ -70,7 +70,7 @@ export class DataService {
           reject(err);
         }
         if (response) {
-          resolve(response.toObject().thread);
+          resolve(response.getThread());
         }
       });
     }));
