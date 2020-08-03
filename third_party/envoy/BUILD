@@ -2,6 +2,7 @@ load(
     "@io_bazel_rules_docker//container:container.bzl",
     "container_image",
     "container_layer",
+    "container_push",
 )
 load("//:common_def.bzl", "TAGPOST_GRPC_PORT", "TAGPOST_GRPC_WEB_PORT")
 load("//third_party:decompress.bzl", "unxz")
@@ -26,6 +27,7 @@ container_image(
     cmd = [],
     entrypoint = ["/opt/bootstrap/start_envoy.sh"],
     env = {
+        "BACKEND_HOST": "localhost",
         "TAGPOST_GRPC_PORT": TAGPOST_GRPC_PORT,
         "TAGPOST_GRPC_WEB_PORT": TAGPOST_GRPC_WEB_PORT,
         "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
@@ -36,4 +38,13 @@ container_image(
         TAGPOST_GRPC_WEB_PORT + "/tcp",
     ],
     repository = "tagpost_server",
+)
+
+container_push(
+    name = "envoy_image_push",
+    format = "Docker",
+    image = ":envoy_image",
+    registry = "gcr.io",
+    repository = "testing-bigtest/tagpost_envoy",
+    tag = "dev",
 )
