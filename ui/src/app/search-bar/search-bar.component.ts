@@ -2,6 +2,7 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component, OnInit} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Router} from '@angular/router';
+
 import {DataService} from 'app/service/data.service';
 
 @Component({
@@ -44,6 +45,10 @@ export class SearchBarComponent implements OnInit {
 
     if (index >= 0) {
       this.tags.splice(index, 1);
+    }
+
+    if (this.tags.length === 0) {
+      this.dataService.clearThreadList();
     }
   }
 

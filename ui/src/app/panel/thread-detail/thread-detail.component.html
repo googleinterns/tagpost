@@ -1,0 +1,88 @@
+<!-- Message box to show a donut chart of TagStats -->
+<article class="message is-info">
+  <div class="message-body">
+    <app-donut-chart><</app-donut-chart>
+  </div>
+</article>
+
+<!-- Show a list of comments under thread -->
+<div *ngIf="(commentList$ | async) as commentList">
+  <!-- Main container-->
+  <nav class="level">
+    <!-- Left side: comment count-->
+    <div class="level-left">
+      <div class="level-item">
+        <p class="subtitle is-5">
+          <strong>{{commentList.length}}</strong> Comments
+        </p>
+      </div>
+    </div>
+    <!-- Right side: new comment button-->
+    <div class="level-right">
+      <p class="level-item">
+        <a class="button mat-raised-button is-block is-rounded is-light is-link">
+          <span class="new-common-button"> New Comment </span>
+        </a>
+      </p>
+    </div>
+  </nav>
+  <br>
+  <!-- comment media block-->
+  <article class="media" *ngFor="let comment of commentList">
+    <div class="media-content">
+      <div class="content">
+        <div class="container">
+          <strong class="username">{{comment.getUsername()}}</strong>
+          <div class="comment-created-time" class="heading">
+            Posted: {{convertTimestamp(comment.getTimestamp())}}</div>
+        </div>
+        {{comment.getCommentContent()}}
+        <br>
+      </div>
+      <!-- show a list of extra tags -->
+      <mat-chip-list class="example-chip">
+        <div mat-chip class="tag is-primary is-light is-small" *ngFor="let tag of comment.getExtraTagsList()">
+          {{tag}}
+        </div>
+      </mat-chip-list>
+    </div>
+    <br>
+  </article>
+</div>
+<br>
+
+<!-- Input field for adding new comment   -->
+<div class="box">
+  <article class="media">
+    <figure class="media-left">
+    </figure>
+    <div class="media-content">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Text input">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Extra Tags</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Pick your extra tags here..">
+        </div>
+      </div>
+      <div class="field">
+        <p class="control">
+          <label class="label">Comment</label>
+          <textarea class="textarea" placeholder="Add a comment..."></textarea>
+        </p>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button mat-button class="button is-info">Post comment</button>
+        </div>
+        <div class="control">
+          <button mat-button class="button is-light">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>

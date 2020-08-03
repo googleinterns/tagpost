@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 
 import {Observable, Subject} from 'rxjs';
 
-import {Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
+import {Comment, Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
   AddThreadWithTagResponse,
+  FetchCommentsUnderThreadRequest,
   FetchThreadsByTagRequest,
   FetchThreadsByTagResponse
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
@@ -21,8 +22,11 @@ import {environment} from 'environments/environment';
 export class DataService {
   private client: TagpostServiceClient;
 
-  private threadListSource = new Subject<any>();
-  public readonly threadList: Observable<any> = this.threadListSource.asObservable();
+  private threadListSource = new Subject<Array<Thread>>();
+  public readonly threadList: Observable<Array<Thread>> = this.threadListSource.asObservable();
+
+  private commentListSource = new Subject<Array<Comment>>();
+  public readonly commentList: Observable<Array<Comment>> = this.commentListSource.asObservable();
 
   constructor() {
     this.client = new TagpostServiceClient(environment.apiProxy);
@@ -33,6 +37,9 @@ export class DataService {
    * If success, Multicast the newly fetched thread list to all threadList observers
    */
   fetchThreads(tag: string): void {
+    // clear threadListSource before fetching threads
+    this.clearThreadList();
+
     const req = new FetchThreadsByTagRequest();
     req.setTag(tag);
     this.client.fetchThreadsByTag(req, {}, (err, response: FetchThreadsByTagResponse) => {
@@ -40,7 +47,7 @@ export class DataService {
         console.error(err);
       }
       if (response) {
-        this.threadListSource.next(response.toObject().threadsList);
+        this.threadListSource.next(response.getThreadsList());
       }
     });
   }
@@ -49,7 +56,7 @@ export class DataService {
    * Add a new thread with given tag name.
    */
   addThread(tag: string, topic: string): Promise<Thread> {
-    return new Promise<any>(((resolve, reject) => {
+    return new Promise<Thread>(((resolve, reject) => {
       const primaryTag = new Tag();
       primaryTag.setTagName(tag);
 
@@ -66,9 +73,30 @@ export class DataService {
           reject(err);
         }
         if (response) {
-          resolve(response.toObject().thread);
+          resolve(response.getThread());
         }
       });
     }));
+  }
+
+  /**
+   * Fetch a list of comments with given threadId.
+   * If success, Multicast the newly fetched comment list to all commentList observers
+   */
+  fetchComments(threadId: string): void {
+    const req = new FetchCommentsUnderThreadRequest();
+    req.setThreadId(threadId);
+    this.client.fetchCommentsUnderThread(req, {}, (err, response) => {
+      if (err) {
+        console.error(err.code, err.message);
+      }
+      if (response) {
+        this.commentListSource.next(response.getCommentList());
+      }
+    });
+  }
+
+  clearThreadList(): void {
+    this.threadListSource.next();
   }
 }
