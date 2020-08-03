@@ -8,7 +8,7 @@ declare var google: any;
 @Injectable({
   providedIn: 'root'
 })
-export class GoogleChartService {s
+export class GoogleChartService {
 
   private readonly google: any;
 

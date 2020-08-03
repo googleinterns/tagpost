@@ -30,7 +30,8 @@ export class ThreadDetailComponent implements OnInit {
   ngOnInit(): void {
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {
-        this.dataService.fetchComments(this.route.snapshot.params.id);
+        this.dataService.fetchComments(params.get('id'));
+        this.dataService.fetchTagStats(params.get('tagName'))
         return this.dataService.commentList;
       })
     );

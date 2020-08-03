@@ -2,14 +2,14 @@ import {Injectable} from '@angular/core';
 
 import {Observable, Subject} from 'rxjs';
 
-import {Comment, Tag, Thread} from 'compiled_proto/src/proto/tagpost_pb';
+import {Comment, Tag, TagStats, Thread} from 'compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
   AddThreadWithTagRequest,
   AddThreadWithTagResponse,
   FetchCommentsUnderThreadRequest,
   FetchThreadsByTagRequest,
-  FetchThreadsByTagResponse
+  FetchThreadsByTagResponse, GetTagStatsRequest
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
 import {environment} from 'environments/environment';
 
@@ -27,6 +27,9 @@ export class DataService {
 
   private commentListSource = new Subject<Array<Comment>>();
   public readonly commentList: Observable<Array<Comment>> = this.commentListSource.asObservable();
+
+  private tagStatsSource = new Subject<TagStats>();
+  public readonly tagStats: Observable<TagStats> = this.tagStatsSource.asObservable();
 
   constructor() {
     this.client = new TagpostServiceClient(environment.apiProxy);
@@ -96,7 +99,24 @@ export class DataService {
     });
   }
 
+  /**
+   * Fetch Tag Statistics with given tag
+   * If success, Multicast the newly fetched tagStats to all tagStats observers
+   */
+  fetchTagStats(tag: string): void {
+    const req = new GetTagStatsRequest();
+    req.setTag(tag);
+    this.client.getTagStats(req, {}, (err, response) => {
+      if (err) {
+        console.error(err.code, err.message);
+      }
+      if (response) {
+        this.tagStatsSource.next(response.getStats());
+      }
+    });
+  }
+
   clearThreadList(): void {
-    this.threadListSource.next();
+    this.threadListSource.next(void Array<Thread>());
   }
 }

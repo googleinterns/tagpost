@@ -7,7 +7,7 @@
         <div class="level-left">
           <div class="level-item">
             <div class="thread">
-              <a [routerLink]="['/thread', thread.getThreadId()]">
+              <a [routerLink]="['/thread', thread.getThreadId(), {tagName: thread.getPrimaryTag().getTagName()}]">
                 <p><strong>{{thread.getTopic()}}</strong>
                 </p>
               </a>
