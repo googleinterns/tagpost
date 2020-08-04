@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {GoogleChartService} from 'app/google-chart/google-chart.service';
 import {DataService} from 'app/service/data.service';
@@ -15,19 +15,15 @@ import {TagStats} from 'compiled_proto/src/proto/tagpost_pb';
 export class DonutChartComponent implements OnInit {
 
   private library;
-  private tagStats: TagStats;
+  @Input() tagStats: TagStats; // Input passed from ThreadDetailComponent
 
-  constructor(private chartService: GoogleChartService,
-              private dataService: DataService) {
+  constructor(private chartService: GoogleChartService) {
     this.library = this.chartService.getGoogle();
     this.library.charts.load('current', { packages: ['corechart'] });
     this.library.charts.setOnLoadCallback(this.drawChart.bind(this));
   }
 
   ngOnInit(): void {
-    this.dataService.tagStats.subscribe((tagStats) => {
-      this.tagStats = tagStats;
-    });
   }
 
   private drawChart(): void {

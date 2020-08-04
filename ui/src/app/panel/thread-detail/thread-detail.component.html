@@ -1,9 +1,20 @@
-<!-- Message box to show a donut chart of TagStats -->
-<article class="message is-info">
-  <div class="message-body">
-    <app-donut-chart></app-donut-chart>
-  </div>
-</article>
+<ng-container *ngIf="(tagStats$ | async) as tagStats">
+  <!-- Message box to show a donut chart of TagStats -->
+  <article class="message is-info" *ngIf="tagStats.getStatisticsMap().arr_.length > 0 else noData">
+    <div class="message-body">
+      <app-donut-chart [tagStats]="tagStats">
+      </app-donut-chart>
+    </div>
+  </article>
+  <!-- Message box to show notification when no statistics available -->
+  <ng-template #noData>
+    <article class="message is-warning">
+      <div class="message-body">
+        No tag statistic found for <strong> {{tagStats.getTag()}} </strong>
+      </div>
+    </article>
+  </ng-template>
+</ng-container>
 
 <!-- Show a list of comments under thread -->
 <div *ngIf="(commentList$ | async) as commentList">
