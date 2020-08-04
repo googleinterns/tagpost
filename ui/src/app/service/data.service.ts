@@ -8,9 +8,11 @@ import {
   AddThreadWithTagRequest,
   AddThreadWithTagResponse,
   FetchCommentsUnderThreadRequest,
+  FetchCommentsUnderThreadResponse,
   FetchThreadsByTagRequest,
   FetchThreadsByTagResponse,
-  GetTagStatsRequest
+  GetTagStatsRequest,
+  GetTagStatsResponse
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
 import {environment} from 'environments/environment';
 
@@ -48,7 +50,8 @@ export class DataService {
     req.setTag(tag);
     this.client.fetchThreadsByTag(req, {}, (err, response: FetchThreadsByTagResponse) => {
       if (err) {
-        console.error(err);
+        console.error(err.code, err.message);
+        alert(err.message);
       }
       if (response) {
         this.threadListSource.next(response.getThreadsList());
@@ -90,9 +93,10 @@ export class DataService {
   fetchComments(threadId: string): void {
     const req = new FetchCommentsUnderThreadRequest();
     req.setThreadId(threadId);
-    this.client.fetchCommentsUnderThread(req, {}, (err, response) => {
+    this.client.fetchCommentsUnderThread(req, {}, (err, response: FetchCommentsUnderThreadResponse) => {
       if (err) {
         console.error(err.code, err.message);
+        alert(err.message);
       }
       if (response) {
         this.commentListSource.next(response.getCommentList());
@@ -107,9 +111,10 @@ export class DataService {
   fetchTagStats(tag: string): void {
     const req = new GetTagStatsRequest();
     req.setTag(tag);
-    this.client.getTagStats(req, {}, (err, response) => {
+    this.client.getTagStats(req, {}, (err, response: GetTagStatsResponse) => {
       if (err) {
         console.error(err.code, err.message);
+        alert(err.message);
       }
       if (response) {
         this.tagStatsSource.next(response.getStats());
