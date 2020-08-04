@@ -9,7 +9,8 @@ import {
   AddThreadWithTagResponse,
   FetchCommentsUnderThreadRequest,
   FetchThreadsByTagRequest,
-  FetchThreadsByTagResponse, GetTagStatsRequest
+  FetchThreadsByTagResponse,
+  GetTagStatsRequest
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
 import {environment} from 'environments/environment';
 
