@@ -12,7 +12,6 @@ export class GoogleChartService {
 
   private readonly google: any;
   private loaderPromise: Promise<any>;
-  number = 1;
 
   constructor() {
     this.google = google;
