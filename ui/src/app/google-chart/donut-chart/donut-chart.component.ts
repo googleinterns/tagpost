@@ -1,7 +1,6 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 
 import {GoogleChartService} from 'app/google-chart/google-chart.service';
-import {DataService} from 'app/service/data.service';
 import {TagStats} from 'compiled_proto/src/proto/tagpost_pb';
 
 @Component({
@@ -16,6 +15,7 @@ export class DonutChartComponent implements OnInit {
 
   private library;
   @Input() tagStats: TagStats; // Input passed from ThreadDetailComponent
+  @ViewChild('donutChart') donutChart: ElementRef;
 
   constructor(private chartService: GoogleChartService) {
     this.library = this.chartService.getGoogle();
@@ -27,7 +27,7 @@ export class DonutChartComponent implements OnInit {
   }
 
   private drawChart(): void {
-    const chart = new this.library.visualization.PieChart(document.getElementById('donutchart'));
+    const chart = new this.library.visualization.PieChart(this.donutChart.nativeElement);
 
     const data = new this.library.visualization.DataTable();
     data.addColumn('string', 'Category');
