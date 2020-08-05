@@ -19,8 +19,7 @@ export class DonutChartComponent implements OnInit {
 
   constructor(private chartService: GoogleChartService) {
     this.library = this.chartService.getGoogle();
-    this.library.charts.load('current', { packages: ['corechart'] });
-    this.library.charts.setOnLoadCallback(this.drawChart.bind(this));
+    this.chartService.loadChart().then(this.drawChart.bind(this));
   }
 
   ngOnInit(): void {
@@ -45,5 +44,4 @@ export class DonutChartComponent implements OnInit {
     };
     chart.draw(data, options);
   }
-
 }
