@@ -1,12 +1,11 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {MatChipInputEvent} from '@angular/material/chips';
-
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
+import {MatChipInputEvent} from '@angular/material/chips';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {DataService} from 'app/service/data.service';
-import {Comment} from 'compiled_proto/src/proto/tagpost_pb';
 import {ActivatedRoute, ParamMap} from '@angular/router';
+
+import {DataService} from 'app/service/data.service';
 
 @Component({
   selector: 'app-comment-form',
@@ -19,6 +18,8 @@ export class CommentFormComponent implements OnInit {
 
   threadId: string;
   primaryTag: string;
+
+  // Inputs from comment form
   name: string;
   extraTags: string[] = [];
   content: string;
@@ -40,7 +41,7 @@ export class CommentFormComponent implements OnInit {
     });
   }
 
-  addExtraTags(event: MatChipInputEvent): void {
+  addExtraTag(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
@@ -55,7 +56,7 @@ export class CommentFormComponent implements OnInit {
     }
   }
 
-  removeTag(tag: string): void {
+  removeExtraTag(tag: string): void {
     const index = this.extraTags.indexOf(tag);
 
     if (index >= 0) {
@@ -80,7 +81,7 @@ export class CommentFormComponent implements OnInit {
   }
 
   /**
-   * Clear all data in the form and refetch comments
+   * Clear all data in the form and refetch comments under current thread.
    */
   refresh(): void {
     this.form.reset();
@@ -88,6 +89,9 @@ export class CommentFormComponent implements OnInit {
     this.dataService.fetchComments(this.threadId);
   }
 
+  /**
+   * A pop up bar to show status(success/err) of adding the new comment.
+   */
   openSnackBar(message: string): void {
     this.snackBar.open(message, '', { duration: 2000 });
   }

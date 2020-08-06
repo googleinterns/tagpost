@@ -36,14 +36,14 @@
                         *ngFor="let tag of extraTags"
                         [selectable]="selectable"
                         [removable]="removable"
-                        (removed)="removeTag(tag)">
+                        (removed)="removeExtraTag(tag)">
                 {{tag}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
               </mat-chip>
               <input [matChipInputFor]=extraTagList
                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                      [matChipInputAddOnBlur]="addOnBlur"
-                     (matChipInputTokenEnd)="addExtraTags($event)">
+                     (matChipInputTokenEnd)="addExtraTag($event)">
             </mat-chip-list>
           </mat-form-field>
         </div>
