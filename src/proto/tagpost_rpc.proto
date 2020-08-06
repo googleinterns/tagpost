@@ -56,7 +56,7 @@ message FetchCommentsUnderThreadResponse {
 message AddCommentUnderThreadRequest {
   /*
   Fields required to be filled in the request:
-  thread_id, comment_content, username, extra_tags
+  thread_id, comment_content, username, primary_tag, extra_tags
   */
   Comment comment = 1;
 }
