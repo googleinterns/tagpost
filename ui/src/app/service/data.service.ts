@@ -5,6 +5,8 @@ import {Observable, Subject} from 'rxjs';
 import {Comment, Tag, TagStats, Thread} from 'compiled_proto/src/proto/tagpost_pb';
 import {TagpostServiceClient} from 'compiled_proto/src/proto/Tagpost_rpcServiceClientPb';
 import {
+  AddCommentUnderThreadRequest,
+  AddCommentUnderThreadResponse,
   AddThreadWithTagRequest,
   AddThreadWithTagResponse,
   FetchCommentsUnderThreadRequest,
@@ -102,6 +104,43 @@ export class DataService {
         this.commentListSource.next(response.getCommentList());
       }
     });
+  }
+
+  /**
+   * Add a new comment under a specified thread.
+   */
+  addComment(threadId: string, username: string, content: string, primaryTag: string, extraTags: string[]): Promise<Comment> {
+    return new Promise<Comment>(((resolve, reject) => {
+
+      const newComment = new Comment();
+      newComment.setThreadId(threadId);
+      newComment.setUsername(username);
+      newComment.setCommentContent(content);
+
+      const tag = new Tag();
+      tag.setTagName(primaryTag);
+      newComment.setPrimaryTag(tag);
+
+      const extraTagsList: Array<Tag> = extraTags.map(tagName  => {
+        const extraTag = new Tag();
+        extraTag.setTagName(tagName);
+        return extraTag;
+      });
+      newComment.setExtraTagsList(extraTagsList);
+
+      const req = new AddCommentUnderThreadRequest();
+      req.setComment(newComment);
+
+      this.client.addCommentUnderThread(req, {}, (err, response: AddCommentUnderThreadResponse) => {
+        if (err) {
+          console.error(err.code, err.message);
+          reject(err);
+        }
+        if (response) {
+          resolve(response.getComment());
+        }
+      });
+    }));
   }
 
   /**

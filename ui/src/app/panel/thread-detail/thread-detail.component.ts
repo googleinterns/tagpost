@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {Observable} from 'rxjs';
@@ -17,6 +17,9 @@ import {Comment, TagStats} from 'compiled_proto/src/proto/tagpost_pb';
  * A component to display all comments under thread and TagStats of primaryTag
  */
 export class ThreadDetailComponent implements OnInit {
+
+  @ViewChild('form') commentForm: ElementRef;
+
   commentList$: Observable<Array<Comment>>;
   tagStats$: Observable<TagStats>;
   convertTimestamp = convertTimestamp;
@@ -27,7 +30,6 @@ export class ThreadDetailComponent implements OnInit {
     private dataService: DataService
   ) {
   }
-
   ngOnInit(): void {
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {
@@ -41,5 +43,11 @@ export class ThreadDetailComponent implements OnInit {
         return this.dataService.tagStats;
       })
     );
+  }
+  /**
+   * Navigate to add comment form
+   */
+  scrollToFrom(): void {
+    this.commentForm.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

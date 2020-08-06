@@ -8,7 +8,7 @@
         Search any tag to get started
       </h2>
       <div class="field is-grouped">
-        <mat-chip-list #chipList aria-label="Fruit selection">
+        <mat-chip-list #chipList>
           <mat-chip color="accent" selected *ngFor="let tag of tags" [selectable]="selectable"
                     [removable]="removable" (removed)="remove(tag)">
             {{tag}}
