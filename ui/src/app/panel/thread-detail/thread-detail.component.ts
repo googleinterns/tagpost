@@ -47,7 +47,7 @@ export class ThreadDetailComponent implements OnInit {
   /**
    * Navigate to add comment form
    */
-  scrollToFrom(): void {
+  scrollToForm(): void {
     this.commentForm.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }
