@@ -6,7 +6,7 @@ import {switchMap} from 'rxjs/operators';
 
 import {DataService} from 'app/service/data.service';
 import {convertTimestamp} from 'app/service/utils';
-import {Comment} from 'compiled_proto/src/proto/tagpost_pb';
+import {Comment, TagStats} from 'compiled_proto/src/proto/tagpost_pb';
 
 @Component({
   selector: 'app-thread-detail',
@@ -18,6 +18,7 @@ import {Comment} from 'compiled_proto/src/proto/tagpost_pb';
  */
 export class ThreadDetailComponent implements OnInit {
   commentList$: Observable<Array<Comment>>;
+  tagStats$: Observable<TagStats>;
   convertTimestamp = convertTimestamp;
 
   constructor(
@@ -30,8 +31,14 @@ export class ThreadDetailComponent implements OnInit {
   ngOnInit(): void {
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {
-        this.dataService.fetchComments(this.route.snapshot.params.id);
+        this.dataService.fetchComments(params.get('id'));
         return this.dataService.commentList;
+      })
+    );
+    this.tagStats$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        this.dataService.fetchTagStats(params.get('tagName'));
+        return this.dataService.tagStats;
       })
     );
   }
