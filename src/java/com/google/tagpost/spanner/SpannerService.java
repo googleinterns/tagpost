@@ -196,6 +196,7 @@ public class SpannerService implements DataService {
       Map<String, Integer> statsMap = new Gson().fromJson(jsonStats, mapType);
 
       stats.putAllStatistics(statsMap);
+      stats.setTag(Tag.newBuilder().setTagName(resultSet.getString("PrimaryTag")).build());
     }
     return stats.build();
   }
