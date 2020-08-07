@@ -111,10 +111,10 @@ public class TagpostClient {
         "Client will try to send request to add a new comment under thread with threadId = "
             + threadId);
 
+    // thread_id, comment_content, username, extra_tags is required to be filled in the request
     Comment comment =
         Comment.newBuilder()
             .setUsername("client")
-            .setPrimaryTag(Tag.newBuilder().setTagName("noise").build())
             .addExtraTags(Tag.newBuilder().setTagName("test").build())
             .setCommentContent("new comment")
             .setThreadId(threadId)

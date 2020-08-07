@@ -99,6 +99,18 @@ public class SpannerService implements DataService {
     String commentId = UUID.randomUUID().toString();
     Timestamp timestamp = Timestamp.now();
 
+    // retrieve primaryTagName from Thread table
+    String primaryTag = "";
+    String SQLStatement = "SELECT PrimaryTag FROM Thread WHERE ThreadID = @threadId";
+    Statement statement =
+        Statement.newBuilder(SQLStatement).bind("threadId").to(comment.getThreadId()).build();
+
+    try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
+      while (resultSet.next()) {
+        primaryTag = resultSet.getString("PrimaryTag");
+      }
+    }
+
     Mutation mutation =
         Mutation.newInsertBuilder("Comment")
             .set("CommentID")
@@ -112,7 +124,7 @@ public class SpannerService implements DataService {
             .set("ThreadID")
             .to(comment.getThreadId())
             .set("PrimaryTag")
-            .to(comment.getPrimaryTag().getTagName())
+            .to(primaryTag)
             .set("ExtraTags")
             .toStringArray(
                 comment.getExtraTagsList().stream()
