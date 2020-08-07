@@ -109,17 +109,13 @@ export class DataService {
   /**
    * Add a new comment under a specified thread.
    */
-  addComment(threadId: string, username: string, content: string, primaryTag: string, extraTags: string[]): Promise<Comment> {
+  addComment(threadId: string, username: string, content: string, extraTags: string[]): Promise<Comment> {
     return new Promise<Comment>(((resolve, reject) => {
 
       const newComment = new Comment();
       newComment.setThreadId(threadId);
       newComment.setUsername(username);
       newComment.setCommentContent(content);
-
-      const tag = new Tag();
-      tag.setTagName(primaryTag);
-      newComment.setPrimaryTag(tag);
 
       const extraTagsList: Array<Tag> = extraTags.map(tagName  => {
         const extraTag = new Tag();

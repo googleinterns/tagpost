@@ -68,7 +68,7 @@ export class CommentFormComponent implements OnInit {
    * Add a new comment with form input. Refresh page after adding comment.
    */
   addComment(): void {
-    this.dataService.addComment(this.threadId, this.name, this.content, this.primaryTag, this.extraTags)
+    this.dataService.addComment(this.threadId, this.name, this.content, this.extraTags)
       .then(comment => {
         this.openSnackBar(comment.getUsername() + 'Your comment is added :D');
         this.refresh();
