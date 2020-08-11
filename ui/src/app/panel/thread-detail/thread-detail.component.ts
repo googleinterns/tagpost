@@ -30,6 +30,7 @@ export class ThreadDetailComponent implements OnInit {
     private dataService: DataService
   ) {
   }
+
   ngOnInit(): void {
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {

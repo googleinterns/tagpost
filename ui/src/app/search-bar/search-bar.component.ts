@@ -28,7 +28,7 @@ export class SearchBarComponent implements OnInit {
     const value = event.value;
 
     // Add tag
-    if ((value || '').trim()) {
+    if (value.trim()) {
       this.tags.push(value.trim());
     }
 

@@ -1,9 +1,11 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, ParamMap} from '@angular/router';
+
+import {Subscription} from 'rxjs';
 
 import {DataService} from 'app/service/data.service';
 
@@ -12,7 +14,7 @@ import {DataService} from 'app/service/data.service';
   templateUrl: './comment-form.component.html',
   styleUrls: ['./comment-form.component.sass']
 })
-export class CommentFormComponent implements OnInit {
+export class CommentFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('commentForm') form: NgForm;
 
@@ -25,6 +27,7 @@ export class CommentFormComponent implements OnInit {
   content: string;
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  private subscription: Subscription;
 
   constructor(private dataService: DataService,
               private snackBar: MatSnackBar,
@@ -32,10 +35,14 @@ export class CommentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {
+    this.subscription = this.route.paramMap.subscribe((params: ParamMap) => {
       this.threadId = params.get('id');
       this.primaryTag = params.get('tagName');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   addExtraTag(event: MatChipInputEvent): void {
@@ -43,7 +50,7 @@ export class CommentFormComponent implements OnInit {
     const value = event.value;
 
     // Add tag
-    if ((value || '').trim()) {
+    if (value.trim()) {
       this.extraTags.push(value.trim());
     }
 
@@ -72,7 +79,7 @@ export class CommentFormComponent implements OnInit {
       })
       .catch(
         err => {
-          this.openSnackBar('Sorry, something goes wrong..');
+          this.openSnackBar('Sorry, something went wrong..');
           this.refresh();
         });
   }
