@@ -116,13 +116,13 @@ public class TagpostClientTest {
 
     ArgumentCaptor<AddThreadWithTagRequest> requestCaptor =
         ArgumentCaptor.forClass(AddThreadWithTagRequest.class);
-    client.requestAddNewThread(THREAD_ID);
+    client.requestAddNewThread(TAG);
 
     verify(serviceImpl)
         .addThreadWithTag(
             requestCaptor.capture(),
             ArgumentMatchers.<StreamObserver<AddThreadWithTagResponse>>any());
-    assertEquals(THREAD_ID, requestCaptor.getValue().getThread().getPrimaryTag().getTagName());
+    assertEquals(TAG, requestCaptor.getValue().getThread().getPrimaryTag().getTagName());
   }
 
   @Test
