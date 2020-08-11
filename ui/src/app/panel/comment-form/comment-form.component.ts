@@ -24,9 +24,6 @@ export class CommentFormComponent implements OnInit {
   extraTags: string[] = [];
   content: string;
 
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(private dataService: DataService,

@@ -12,9 +12,7 @@ import {DataService} from 'app/service/data.service';
 })
 
 export class SearchBarComponent implements OnInit {
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   tags: string[] = [];
 

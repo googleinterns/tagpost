@@ -34,15 +34,14 @@
             <mat-chip-list #extraTagList>
               <mat-chip color="primary" selected
                         *ngFor="let tag of extraTags"
-                        [selectable]="selectable"
-                        [removable]="removable"
+                        [removable]=true
                         (removed)="removeExtraTag(tag)">
                 {{tag}}
-                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                <mat-icon matChipRemove *ngIf=true>cancel</mat-icon>
               </mat-chip>
               <input [matChipInputFor]=extraTagList
                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                     [matChipInputAddOnBlur]="addOnBlur"
+                     [matChipInputAddOnBlur]=true
                      (matChipInputTokenEnd)="addExtraTag($event)">
             </mat-chip-list>
           </mat-form-field>
