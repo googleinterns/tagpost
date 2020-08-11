@@ -16,7 +16,7 @@ import {
   GetTagStatsRequest,
   GetTagStatsResponse
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
-import {environment} from 'environments/environment';
+
 
 /**
  * A data service that communicate with backend services.
@@ -37,7 +37,7 @@ export class DataService {
   public readonly tagStats: Observable<TagStats> = this.tagStatsSource.asObservable();
 
   constructor() {
-    this.client = new TagpostServiceClient(environment.apiProxy);
+    this.client = this.createGrpcClient();
   }
 
   /**
@@ -65,7 +65,7 @@ export class DataService {
    * Add a new thread with given tag name.
    */
   addThread(tag: string, topic: string): Promise<Thread> {
-    return new Promise<Thread>(((resolve, reject) => {
+    return new Promise<Thread> ((resolve, reject) => {
       const primaryTag = new Tag();
       primaryTag.setTagName(tag);
 
@@ -85,7 +85,7 @@ export class DataService {
           resolve(response.getThread());
         }
       });
-    }));
+    });
   }
 
   /**
@@ -110,7 +110,7 @@ export class DataService {
    * Add a new comment under a specified thread.
    */
   addComment(threadId: string, username: string, content: string, extraTags: string[]): Promise<Comment> {
-    return new Promise<Comment>(((resolve, reject) => {
+    return new Promise<Comment> ((resolve, reject) => {
 
       const newComment = new Comment();
       newComment.setThreadId(threadId);
@@ -136,7 +136,7 @@ export class DataService {
           resolve(response.getComment());
         }
       });
-    }));
+    });
   }
 
   /**
@@ -159,5 +159,13 @@ export class DataService {
 
   clearThreadList(): void {
     this.threadListSource.next(void Array<Thread>());
+  }
+
+  createGrpcClient(): TagpostServiceClient {
+    let url = new URL('/', window.location.toString()).toString();
+    if (url.endsWith('/')) {
+      url = url.substring(0, url.length - 1);
+    }
+    return new TagpostServiceClient(url);
   }
 }
