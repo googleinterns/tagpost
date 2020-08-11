@@ -85,8 +85,8 @@ public class SpannerService implements DataService {
 
     ImmutableList<Comment> commentList;
 
-    String SQLStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
-    Statement statement = Statement.newBuilder(SQLStatement).bind("threadId").to(threadId).build();
+    String sqlStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
+    Statement statement = Statement.newBuilder(sqlStatement).bind("threadId").to(threadId).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       commentList = convertResultToCommentList(resultSet);
@@ -101,9 +101,9 @@ public class SpannerService implements DataService {
 
     // retrieve primaryTagName from Thread table
     String primaryTag = "";
-    String SQLStatement = "SELECT PrimaryTag FROM Thread WHERE ThreadID = @threadId";
+    String sqlStatement = "SELECT PrimaryTag FROM Thread WHERE ThreadID = @threadId";
     Statement statement =
-        Statement.newBuilder(SQLStatement).bind("threadId").to(comment.getThreadId()).build();
+        Statement.newBuilder(sqlStatement).bind("threadId").to(comment.getThreadId()).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       while (resultSet.next()) {
@@ -142,8 +142,8 @@ public class SpannerService implements DataService {
   public TagStats getTagStats(String tag) {
     TagStats stats;
 
-    String SQLStatement = "SELECT * FROM TagStats WHERE PrimaryTag = @tag";
-    Statement statement = Statement.newBuilder(SQLStatement).bind("tag").to(tag).build();
+    String sqlStatement = "SELECT * FROM TagStats WHERE PrimaryTag = @tag";
+    Statement statement = Statement.newBuilder(sqlStatement).bind("tag").to(tag).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       stats = convertResultToTagStats(resultSet);
