@@ -63,9 +63,7 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.threadListSource.next(response.getThreadsList());
-      }
+      this.threadListSource.next(response.getThreadsList());
     });
   }
 
@@ -89,9 +87,7 @@ export class DataService {
           console.error(err.code, err.message);
           reject(err);
         }
-        if (response) {
-          resolve(response.getThread());
-        }
+        resolve(response.getThread());
       });
     });
   }
@@ -108,9 +104,7 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.commentListSource.next(response.getCommentList());
-      }
+      this.commentListSource.next(response.getCommentList());
     });
   }
 
@@ -140,9 +134,7 @@ export class DataService {
           console.error(err.code, err.message);
           reject(err);
         }
-        if (response) {
-          resolve(response.getComment());
-        }
+        resolve(response.getComment());
       });
     });
   }
@@ -159,9 +151,7 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.tagStatsSource.next(response.getStats());
-      }
+      this.tagStatsSource.next(response.getStats());
     });
   }
 
