@@ -17,7 +17,6 @@ import {
   GetTagStatsResponse
 } from 'compiled_proto/src/proto/tagpost_rpc_pb';
 
-
 /**
  * A data service that communicate with backend services.
  */
@@ -25,6 +24,11 @@ import {
   providedIn: 'root'
 })
 export class DataService {
+
+  constructor() {
+    this.client = DataService.createGrpcClient();
+  }
+
   private client: TagpostServiceClient;
 
   private threadListSource = new Subject<Array<Thread>>();
@@ -36,8 +40,12 @@ export class DataService {
   private tagStatsSource = new Subject<TagStats>();
   public readonly tagStats: Observable<TagStats> = this.tagStatsSource.asObservable();
 
-  constructor() {
-    this.client = this.createGrpcClient();
+  private static createGrpcClient(): TagpostServiceClient {
+    let url = new URL('/', window.location.toString()).toString();
+    if (url.endsWith('/')) {
+      url = url.substring(0, url.length - 1);
+    }
+    return new TagpostServiceClient(url);
   }
 
   /**
@@ -55,9 +63,7 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.threadListSource.next(response.getThreadsList());
-      }
+      this.threadListSource.next(response.getThreadsList());
     });
   }
 
@@ -65,7 +71,7 @@ export class DataService {
    * Add a new thread with given tag name.
    */
   addThread(tag: string, topic: string): Promise<Thread> {
-    return new Promise<Thread> ((resolve, reject) => {
+    return new Promise<Thread>((resolve, reject) => {
       const primaryTag = new Tag();
       primaryTag.setTagName(tag);
 
@@ -81,9 +87,7 @@ export class DataService {
           console.error(err.code, err.message);
           reject(err);
         }
-        if (response) {
-          resolve(response.getThread());
-        }
+        resolve(response.getThread());
       });
     });
   }
@@ -100,9 +104,7 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.commentListSource.next(response.getCommentList());
-      }
+      this.commentListSource.next(response.getCommentList());
     });
   }
 
@@ -110,14 +112,14 @@ export class DataService {
    * Add a new comment under a specified thread.
    */
   addComment(threadId: string, username: string, content: string, extraTags: string[]): Promise<Comment> {
-    return new Promise<Comment> ((resolve, reject) => {
+    return new Promise<Comment>((resolve, reject) => {
 
       const newComment = new Comment();
       newComment.setThreadId(threadId);
       newComment.setUsername(username);
       newComment.setCommentContent(content);
 
-      const extraTagsList: Array<Tag> = extraTags.map(tagName  => {
+      const extraTagsList: Array<Tag> = extraTags.map(tagName => {
         const extraTag = new Tag();
         extraTag.setTagName(tagName);
         return extraTag;
@@ -132,9 +134,7 @@ export class DataService {
           console.error(err.code, err.message);
           reject(err);
         }
-        if (response) {
-          resolve(response.getComment());
-        }
+        resolve(response.getComment());
       });
     });
   }
@@ -151,21 +151,11 @@ export class DataService {
         console.error(err.code, err.message);
         alert(err.message);
       }
-      if (response) {
-        this.tagStatsSource.next(response.getStats());
-      }
+      this.tagStatsSource.next(response.getStats());
     });
   }
 
   clearThreadList(): void {
     this.threadListSource.next(void Array<Thread>());
-  }
-
-  createGrpcClient(): TagpostServiceClient {
-    let url = new URL('/', window.location.toString()).toString();
-    if (url.endsWith('/')) {
-      url = url.substring(0, url.length - 1);
-    }
-    return new TagpostServiceClient(url);
   }
 }

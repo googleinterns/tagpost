@@ -41,8 +41,8 @@ public class SpannerService implements DataService {
 
     ImmutableList<Thread> threadList;
 
-    String SQLStatement = "SELECT * FROM Thread WHERE PrimaryTag = @primaryTag";
-    Statement statement = Statement.newBuilder(SQLStatement).bind("primaryTag").to(tag).build();
+    String sqlLStatement = "SELECT * FROM Thread WHERE PrimaryTag = @primaryTag ORDER BY Timestamp DESC";
+    Statement statement = Statement.newBuilder(sqlStatement).bind("primaryTag").to(tag).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
       threadList = convertResultToThreadList(resultSet);
@@ -85,7 +85,7 @@ public class SpannerService implements DataService {
 
     ImmutableList<Comment> commentList;
 
-    String sqlStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId";
+    String sqlStatement = "SELECT * FROM Comment WHERE ThreadID = @threadId ORDER BY Timestamp DESC";
     Statement statement = Statement.newBuilder(sqlStatement).bind("threadId").to(threadId).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {

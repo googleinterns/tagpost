@@ -10,10 +10,10 @@
       <div class="field is-grouped">
         <mat-chip-list #chipList>
           <div mat-chip class="tag primary-tag" selected *ngFor="let tag of tags"
-                    [removable]=true
-                    (removed)="remove(tag)">
+               [removable]=true
+               (removed)="remove(tag)">
             {{tag}}
-            <mat-icon matChipRemove *ngIf=true>cancel</mat-icon>
+            <mat-icon matChipRemove>cancel</mat-icon>
           </div>
         </mat-chip-list>
       </div>
