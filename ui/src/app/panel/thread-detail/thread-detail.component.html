@@ -10,7 +10,7 @@
   <ng-template #noData>
     <article class="message is-warning">
       <div class="message-body">
-        No tag statistic found for <strong> {{tagStats.getTag()}} </strong>
+        No tag statistic found.
       </div>
     </article>
   </ng-template>
@@ -51,11 +51,11 @@
         <br>
       </div>
       <!-- show a list of extra tags -->
-      <mat-chip-list class="example-chip">
-        <div mat-chip class="tag is-primary is-light is-small" *ngFor="let tag of comment.getExtraTagsList()">
-          {{tag}}
-        </div>
-      </mat-chip-list>
+      <div class="tags">
+        <span class="tag is-success is-light" *ngFor="let tag of comment.getExtraTagsList()">
+          <b>{{tag}}</b>
+        </span>
+      </div>
     </div>
     <br>
   </article>
