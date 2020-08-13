@@ -1,0 +1,80 @@
+<div class="box">
+  <form #commentForm='ngForm'>
+    <article class="media">
+      <div class="media-content">
+
+        <!-- Message displaying current Primary Tag -->
+        <article class="message is-info">
+          <div class="message-body">
+            Primary Tag: <strong>{{this.primaryTag}}</strong>
+          </div>
+        </article>
+
+        <!-- Input form for entering name -->
+        <div class="field form-group">
+          <label class="label">Name</label>
+          <div class="control">
+            <input type="text"
+                   class="input form-control" [ngClass]="{'is-danger' : !nameForm.valid && !nameForm.pristine}"
+                   required
+                   placeholder="Enter your name here..."
+                   [(ngModel)]="name" name="nameForm" #nameForm="ngModel">
+            <div [hidden]="nameForm.valid || nameForm.pristine">
+              <p class="help is-danger">
+                This field is required
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input form for entering a list of extra tags -->
+        <div class="field form-group">
+          <mat-form-field class="extra-tags">
+            <label class="label">Extra Tags</label>
+            <mat-chip-list #extraTagList>
+              <mat-chip color="primary" selected
+                        *ngFor="let tag of extraTags"
+                        [removable]=true
+                        (removed)="removeExtraTag(tag)">
+                {{tag}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input [matChipInputFor]=extraTagList
+                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                     [matChipInputAddOnBlur]=true
+                     (matChipInputTokenEnd)="addExtraTag($event)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+
+        <!-- Input form for entering comment content-->
+        <div class="field form-group">
+          <label class="label">Comment</label>
+          <textarea class="textarea form-control" id="content"
+                    [ngClass]="{'is-danger' : !contentForm.valid && !contentForm.pristine}"
+                    required
+                    placeholder="Add a comment..."
+                    [(ngModel)]="content" name="contentForm" #contentForm="ngModel"></textarea>
+          <div [hidden]="contentForm.valid || contentForm.pristine">
+            <p class="help is-danger">
+              This field is required
+            </p>
+          </div>
+        </div>
+
+        <!-- Post Comment/Cancel button -->
+        <div class="field is-grouped">
+          <div class="control">
+            <button mat-button class="button is-link" [disabled]="!commentForm.valid" (click)="addComment()">Post
+              comment
+            </button>
+          </div>
+          <div class="control">
+            <button mat-button class="button is-light" (click)="refresh()">Cancel</button>
+          </div>
+        </div>
+
+      </div>
+    </article>
+  </form>
+</div>

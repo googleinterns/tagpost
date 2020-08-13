@@ -32,7 +32,7 @@
     <div class="level-right">
       <p class="level-item">
         <a class="button mat-raised-button is-block is-rounded is-light is-link">
-          <span class="new-common-button"> New Comment </span>
+          <span class="new-common-button" (click)="scrollToForm()"> New Comment </span>
         </a>
       </p>
     </div>
@@ -59,41 +59,10 @@
     </div>
     <br>
   </article>
-</div>
-<br>
+  <br>
 
-<!-- Input field for adding new comment   -->
-<div class="box">
-  <article class="media">
-    <figure class="media-left">
-    </figure>
-    <div class="media-content">
-      <div class="field">
-        <label class="label">Name</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Text input">
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Extra Tags</label>
-        <div class="control">
-          <input class="input" type="text" placeholder="Pick your extra tags here..">
-        </div>
-      </div>
-      <div class="field">
-        <p class="control">
-          <label class="label">Comment</label>
-          <textarea class="textarea" placeholder="Add a comment..."></textarea>
-        </p>
-      </div>
-      <div class="field is-grouped">
-        <div class="control">
-          <button mat-button class="button is-info">Post comment</button>
-        </div>
-        <div class="control">
-          <button mat-button class="button is-light">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </article>
+  <!-- Input field for adding new comment -->
+  <div #form>
+    <app-comment-form></app-comment-form>
+  </div>
 </div>

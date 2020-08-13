@@ -12,9 +12,7 @@ import {DataService} from 'app/service/data.service';
 })
 
 export class SearchBarComponent implements OnInit {
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
+
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   tags: string[] = [];
 
@@ -30,7 +28,7 @@ export class SearchBarComponent implements OnInit {
     const value = event.value;
 
     // Add tag
-    if ((value || '').trim()) {
+    if (value.trim()) {
       this.tags.push(value.trim());
     }
 
