@@ -20,6 +20,7 @@ import {ThreadDetailComponent} from 'app/panel/thread-detail/thread-detail.compo
 import {ThreadListComponent} from 'app/panel/thread-list/thread-list.component';
 import {SearchBarComponent} from 'app/search-bar/search-bar.component';
 import {ToolBarComponent} from 'app/tool-bar/tool-bar.component';
+import {WelcomeComponent} from './panel/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {ToolBarComponent} from 'app/tool-bar/tool-bar.component';
     SearchBarComponent,
     ToolBarComponent,
     CommentFormComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,

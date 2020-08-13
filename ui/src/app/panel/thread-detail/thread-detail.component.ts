@@ -40,7 +40,7 @@ export class ThreadDetailComponent implements OnInit {
     );
     this.tagStats$ = this.route.paramMap.pipe(
       switchMap(params => {
-        this.dataService.fetchTagStats(params.get('tagName'));
+        this.dataService.fetchTagStats(params.get('tag'));
         return this.dataService.tagStats;
       })
     );

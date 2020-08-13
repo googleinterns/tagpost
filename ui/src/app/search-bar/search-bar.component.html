@@ -9,12 +9,12 @@
       </h2>
       <div class="field is-grouped">
         <mat-chip-list #chipList>
-          <mat-chip color="accent" selected *ngFor="let tag of tags"
+          <div mat-chip class="tag primary-tag" selected *ngFor="let tag of tags"
                     [removable]=true
                     (removed)="remove(tag)">
             {{tag}}
             <mat-icon matChipRemove *ngIf=true>cancel</mat-icon>
-          </mat-chip>
+          </div>
         </mat-chip-list>
       </div>
       <div class="field is-grouped">
@@ -26,7 +26,9 @@
                  (matChipInputTokenEnd)="add($event)">
         </p>
         <p class="control">
-          <button class="button mat-raised-button is-normal is-link is-light is-rounded" (click)="search()">Search
+          <button class="button mat-raised-button is-normal is-link is-light is-rounded"
+                  [routerLink]="['threads', tags[0]]"
+                  [disabled]="!this.tags[0]"> Search
           </button>
           <br>
         </p>

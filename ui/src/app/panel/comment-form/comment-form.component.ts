@@ -37,7 +37,7 @@ export class CommentFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.route.paramMap.subscribe((params: ParamMap) => {
       this.threadId = params.get('id');
-      this.primaryTag = params.get('tagName');
+      this.primaryTag = params.get('tag');
     });
   }
 
@@ -74,7 +74,7 @@ export class CommentFormComponent implements OnInit, OnDestroy {
   addComment(): void {
     this.dataService.addComment(this.threadId, this.name, this.content, this.extraTags)
       .then(comment => {
-        this.openSnackBar(comment.getUsername() + 'Your comment is added :D');
+        this.openSnackBar('Your comment is added :D');
         this.refresh();
       })
       .catch(

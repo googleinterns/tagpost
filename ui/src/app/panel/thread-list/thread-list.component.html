@@ -1,5 +1,5 @@
 <!-- thread panel -->
-<ng-container *ngIf="(threadList$ | async) as threadList else notification">
+<ng-container *ngIf="(threadList$ | async) as threadList">
   <div *ngIf="threadList.length > 0 else notfound">
     <!-- show a list of threads -->
     <div class="box" *ngFor="let thread of threadList">
@@ -19,11 +19,6 @@
     </div>
   </div>
 </ng-container>
-<ng-template #notification>
-  <div class="notification is-link is-light">
-    Search any tag to get started :)
-  </div>
-</ng-template>
 <ng-template #notfound>
   <div class="notification is-danger is-light">
     Sorry, we could not find any thread.
