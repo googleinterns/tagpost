@@ -1,27 +1,20 @@
 <!-- thread panel -->
 <ng-container *ngIf="(threadList$ | async) as threadList">
   <div *ngIf="threadList.length > 0 else notfound">
+
     <!-- show a list of threads -->
     <div class="box" *ngFor="let thread of threadList">
-      <nav class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <div>
-              <a [routerLink]="['./', thread.getThreadId()]">
-                <p class="thread-topic"><strong>{{thread.getTopic()}}</strong>
-                </p>
-              </a>
-              <p class="heading">Created At: {{convertTimestamp(thread.getTimestamp())}}</p>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <a [routerLink]="['./', thread.getThreadId()]">
+        <p class="thread-topic"><strong>{{thread.getTopic()}}</strong></p>
+      </a>
+      <p class="heading">Created At: {{convertTimestamp(thread.getTimestamp())}}</p>
     </div>
   </div>
 </ng-container>
+
 <ng-template #notfound>
   <div class="notification is-danger is-light">
     Sorry, we could not find any thread.
-    <button mat-button color="primary"> <a href="#">Clear your search and try again</a> </button>
+    <button mat-button color="primary"><a href="#">Clear your search and try again</a></button>
   </div>
 </ng-template>
