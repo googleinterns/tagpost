@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {NgModel} from '@angular/forms';
+import {Router} from '@angular/router';
 
 import {DataService} from 'app/service/data.service';
 import {Thread} from 'compiled_proto/src/proto/tagpost_pb';
@@ -12,14 +14,17 @@ import {Thread} from 'compiled_proto/src/proto/tagpost_pb';
   styleUrls: ['./modal.component.sass']
 })
 export class ModalComponent implements OnInit {
-  isModalActive = false;
 
+  @ViewChild('nameForm') form: NgModel;
+
+  isModalActive = false;
   tagName: string;
   topic: string;
   newThread: Thread;
   error: any;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -29,6 +34,7 @@ export class ModalComponent implements OnInit {
     this.dataService.addThread(this.tagName, this.topic)
       .then(thread => {
         this.newThread = thread;
+        this.router.navigate(['threads', thread.getPrimaryTag().getTagName()]);
       })
       .catch(
         err => {
@@ -49,9 +55,10 @@ export class ModalComponent implements OnInit {
   /**
    * Reset all modal value back to default
    */
-  clearModalData(): void {
+  private clearModalData(): void {
     this.newThread = undefined;
     this.error = undefined;
     this.topic = undefined;
+    this.form.reset();
   }
 }
