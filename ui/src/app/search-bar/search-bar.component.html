@@ -27,8 +27,7 @@
         </p>
         <p class="control">
           <button class="button mat-raised-button is-normal is-link is-light is-rounded"
-                  [routerLink]="['threads', tags[0]]"
-                  [disabled]="!this.tags[0]"> Search
+                  (click)="search()"> Search
           </button>
           <br>
         </p>

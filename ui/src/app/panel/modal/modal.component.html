@@ -8,15 +8,10 @@
   <!-- add new thread card -->
   <div [hidden]="newThread || error">
     <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title"> creating thread....</p>
-        <button class="delete" aria-label="close" (click)="toggleModal()"></button>
-      </header>
-      <section class="modal-card-body">
+      <div class="box">
 
         <!-- tag name input field, name is required -->
         <div class="field">
-          <div class="control">
             <label class="label">Tag</label>
             <input class="input" [ngClass]="{'is-danger' : !nameForm.valid && !nameForm.pristine}"
                    type="text"
@@ -24,31 +19,29 @@
                    #nameForm="ngModel"
                    [(ngModel)]="tagName"
                    placeholder="Enter your tag name to create a new thread">
+
             <div [hidden]="nameForm.valid || nameForm.pristine">
               <p class="help is-danger">
                 This field is required
               </p>
             </div>
-          </div>
         </div>
 
         <!-- topic input field, disabled when tag name is not provided-->
         <div class="field">
-          <div class="control">
             <label class="label">Topic</label>
             <input class="input"
                    [disabled]="!nameForm.valid"
                    type="text"
                    [(ngModel)]="topic"
                    placeholder="Enter topic for your new thread">
-          </div>
         </div>
-      </section>
 
-      <!-- footer -->
-      <footer class="modal-card-foot">
-        <button class="button mat-button is-link" [disabled]="!nameForm.valid" (click)="addThread()">Create</button>
-      </footer>
+        <div class="field">
+          <button mat-button class="button is-link is-light" [disabled]="!nameForm.valid" (click)="addThread()">Create
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
