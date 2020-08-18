@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {NgModel} from '@angular/forms';
 import {Router} from '@angular/router';
 
 import {DataService} from 'app/service/data.service';
 import {Thread} from 'compiled_proto/src/proto/tagpost_pb';
+import {Subscription} from 'rxjs';
 
 /**
  * A Modal component that allow user to enter a tag name string and create a new thread with user specified tag name.
@@ -13,11 +14,14 @@ import {Thread} from 'compiled_proto/src/proto/tagpost_pb';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.sass']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('nameForm') form: NgModel;
 
+  subscription: Subscription;
+
   isModalActive = false;
+  defaultTagName: string;
   tagName: string;
   topic: string;
   newThread: Thread;
@@ -28,6 +32,16 @@ export class ModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.dataService.routeParamTag.subscribe(
+      tag => {
+        this.defaultTagName = tag;
+        this.tagName = this.defaultTagName;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   addThread(): void {
@@ -59,6 +73,10 @@ export class ModalComponent implements OnInit {
     this.newThread = undefined;
     this.error = undefined;
     this.topic = undefined;
-    this.form.reset();
+    if (this.defaultTagName) {
+      this.tagName = this.defaultTagName;
+    } else {
+      this.form.reset();
+    }
   }
 }

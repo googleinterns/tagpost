@@ -1,13 +1,11 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 import {Subscription} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
 
 import {DataService} from 'app/service/data.service';
-
 
 @Component({
   selector: 'app-search-bar',
@@ -22,21 +20,15 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(private dataService: DataService,
-              private router: Router,
-              private route: ActivatedRoute) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    // Access route parameters using streams of NavigationEnd event
-    this.subscription = this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map(() => this.route.firstChild)
-    ).subscribe((route: ActivatedRoute) => {
-      const tag = route.snapshot.paramMap.get('tag').trim();
-      if (tag) {
+    this.subscription = this.dataService.routeParamTag.subscribe(
+      tag => {
         this.tags[0] = tag;
       }
-    });
+    );
   }
 
   ngOnDestroy(): void {
@@ -64,5 +56,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
+  }
+
+  search(): void {
+    this.router.navigate(['threads', this.tags[0]]);
   }
 }

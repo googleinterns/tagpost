@@ -34,6 +34,7 @@ export class ThreadDetailComponent implements OnInit {
   ngOnInit(): void {
     this.commentList$ = this.route.paramMap.pipe(
       switchMap(params => {
+        this.dataService.updateRouteParamTag(params.get('tag'));
         this.dataService.fetchComments(params.get('id'));
         return this.dataService.commentList;
       })
@@ -45,6 +46,7 @@ export class ThreadDetailComponent implements OnInit {
       })
     );
   }
+
   /**
    * Navigate to add comment form
    */

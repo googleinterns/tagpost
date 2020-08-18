@@ -24,6 +24,7 @@ export class ThreadListComponent implements OnInit {
   ngOnInit(): void {
     this.threadList$ = this.route.paramMap.pipe(
       switchMap(params => {
+        this.dataService.updateRouteParamTag(params.get('tag'));
         this.dataService.fetchThreads(params.get('tag'));
         return this.dataService.threadList;
       })
