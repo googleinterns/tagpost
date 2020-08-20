@@ -32,13 +32,14 @@
           <mat-form-field class="extra-tags">
             <label class="label">Extra Tags</label>
             <mat-chip-list #extraTagList>
-              <mat-chip color="primary" selected
-                        *ngFor="let tag of extraTags"
-                        [removable]=true
-                        (removed)="removeExtraTag(tag)">
+              <div mat-chip class="tag" selected
+                   *ngFor="let tag of extraTags"
+                   [removable]=true
+                   (removed)="removeExtraTag(tag)">
                 {{tag}}
                 <mat-icon matChipRemove>cancel</mat-icon>
-              </mat-chip>
+              </div>
+
               <input [matChipInputFor]=extraTagList
                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                      [matChipInputAddOnBlur]=true
@@ -65,7 +66,8 @@
         <!-- Post Comment/Cancel button -->
         <div class="field is-grouped">
           <div class="control">
-            <button mat-button class="button is-link" [disabled]="!commentForm.valid" (click)="addComment()">Post
+            <button mat-button class="button is-link is-light" [disabled]="!commentForm.valid" (click)="addComment()">
+              Post
               comment
             </button>
           </div>

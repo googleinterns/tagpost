@@ -1,7 +1,9 @@
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Router} from '@angular/router';
+
+import {Subscription} from 'rxjs';
 
 import {DataService} from 'app/service/data.service';
 
@@ -11,16 +13,26 @@ import {DataService} from 'app/service/data.service';
   styleUrls: ['./search-bar.component.sass']
 })
 
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   tags: string[] = [];
+  subscription: Subscription;
 
   constructor(private dataService: DataService,
               private router: Router) {
   }
 
   ngOnInit(): void {
+    this.subscription = this.dataService.routeParamTag.subscribe(
+      tag => {
+        this.tags[0] = tag;
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   add(event: MatChipInputEvent): void {
@@ -44,15 +56,9 @@ export class SearchBarComponent implements OnInit {
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
-
-    if (this.tags.length === 0) {
-      this.dataService.clearThreadList();
-    }
   }
 
   search(): void {
-    // for now, only first tag entered is used for search
-    this.dataService.fetchThreads(this.tags[0]);
-    this.router.navigate(['/threads']);
+    this.router.navigate(['threads', this.tags[0]]);
   }
 }

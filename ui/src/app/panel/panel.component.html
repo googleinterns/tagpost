@@ -1,32 +1,24 @@
 <div class="container">
   <div class="columns">
+
     <div class="column is-one-quarter">
       <app-modal></app-modal>
       <br>
-      <div class="box">
-        <h5 class="title is-5"># TAG CATEGORIES</h5>
-        <!-- placeholder for demo purpose -->
-        <div class="tags">
-          <a class="tag is-light is-medium is-primary">tag</a>
-          <a class="tag is-light is-medium is-success">tag</a>
-          <a class="tag is-light is-medium is-warning">tag</a>
-          <a class="tag is-light is-medium is-danger">tag</a>
-          <a class="tag is-light is-medium is-link">tag</a>
-          <a class="tag is-light is-medium is-success">tag</a>
-          <a class="tag is-light is-medium is-info">tag</a>
-          <a class="tag is-light is-medium is-success">tag</a>
-        </div>
-      </div>
-    </div>
-    <div class="column">
-      <!-- placeholder for breadcrumb -->
-      <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Threads</a></li>
-          <li class="is-active"><a href="#" aria-current="page">ThreadId:</a></li>
-        </ul>
+
+      <nav class="panel is-link">
+        <p class="panel-heading has-text-centered">
+          Announcement
+        </p>
+        <a class="panel-block">
+          <div class="content">
+            <p class="is-family-monospace has-text-info"> 8/7/2020 Updates:</p>
+            <p> Welcome to TagPost! </p>
+          </div>
+        </a>
       </nav>
+    </div>
+
+    <div class="column">
       <router-outlet></router-outlet>
     </div>
   </div>

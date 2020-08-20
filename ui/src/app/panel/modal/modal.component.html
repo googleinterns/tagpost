@@ -1,54 +1,64 @@
 <a class="button mat-raised-button is-block is-rounded is-light is-link" (click)="toggleModal()">
   <span class="new-thread-button"> New Thread </span>
 </a>
+
 <div class="modal" [ngClass]="{ 'is-active' : isModalActive }">
   <div class="modal-background" (click)="toggleModal()"></div>
+
+  <!-- add new thread card -->
+  <div [hidden]="newThread || error">
+    <div class="modal-card">
+      <div class="box">
+
+        <!-- tag name input field, name is required -->
+        <div class="field">
+            <label class="label">Tag</label>
+            <input class="input" [ngClass]="{'is-danger' : !nameForm.valid && !nameForm.pristine}"
+                   type="text"
+                   required
+                   #nameForm="ngModel"
+                   [(ngModel)]="tagName"
+                   placeholder="Enter your tag name to create a new thread">
+
+            <div [hidden]="nameForm.valid || nameForm.pristine">
+              <p class="help is-danger">
+                This field is required
+              </p>
+            </div>
+        </div>
+
+        <!-- topic input field, disabled when tag name is not provided-->
+        <div class="field">
+            <label class="label">Topic</label>
+            <input class="input"
+                   [disabled]="!nameForm.valid"
+                   type="text"
+                   [(ngModel)]="topic"
+                   placeholder="Enter topic for your new thread">
+        </div>
+
+        <div class="field">
+          <button mat-button class="button is-link is-light" [disabled]="!nameForm.valid" (click)="addThread()">Create
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- notification card-->
   <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title"> creating thread....</p>
-      <button class="delete" aria-label="close" (click)="nameForm.reset(); toggleModal()"></button>
-    </header>
-    <section class="modal-card-body">
-      <!-- tag name input field, name is required -->
-      <div class="field">
-        <div class="control">
-          <label class="label">Tag</label>
-          <input class="input" [ngClass]="{'is-danger' : !nameForm.valid && !nameForm.pristine}"
-                 type="text"
-                 required
-                 #nameForm="ngModel"
-                 [(ngModel)]="tagName"
-                 (ngModelChange)="clearModalData()"
-                 placeholder="Enter your tag name to create a new thread">
-          <div [hidden]="nameForm.valid || nameForm.pristine">
-            <p class="help is-danger">
-              This field is required
-            </p>
-          </div>
-        </div>
-      </div>
-      <!-- topic input field, disabled when tag name is not provided-->
-      <div class="field">
-        <div class="control">
-          <label class="label">Topic</label>
-          <input class="input"
-                 [disabled]="!nameForm.valid"
-                 type="text"
-                 [(ngModel)]="topic"
-                 placeholder="Enter topic for your new thread">
-        </div>
-      </div>
-      <div *ngIf="newThread" class="notification is-success is-light">
-        <p> New thread for <strong>{{tagName}}</strong> just added! </p>
-        <p><strong>threadId: </strong> <a href="#">{{newThread.getThreadId()}}</a></p>
-      </div>
-      <div *ngIf="error" class="notification is-danger is-light">
-        :( Opps, we have encountered some problems.
-      </div>
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button mat-button is-link" [disabled]="!nameForm.valid" (click)="addThread()">Create</button>
-      <button class="button mat-button is-light" (click)="nameForm.reset(); toggleModal()">Cancel</button>
-    </footer>
+    <div *ngIf="newThread" class="notification is-link is-light">
+      <p class="notice"> New thread for <strong>{{tagName}}</strong> just added! </p>
+      <button mat-button color="primary"
+              [routerLink]="['/threads', newThread.getPrimaryTag().getTagName(), newThread.getThreadId()]"
+              (click)="toggleModal(); ">Go to thread.
+      </button>
+    </div>
+
+    <div *ngIf="error" class="notification is-danger is-light">
+      :( Opps, we have encountered some problems.
+    </div>
   </div>
 </div>
+
+

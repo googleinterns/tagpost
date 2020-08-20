@@ -31,6 +31,9 @@ export class DataService {
 
   private client: TagpostServiceClient;
 
+  private routeParamTagSource = new Subject<string>();
+  public readonly routeParamTag = this.routeParamTagSource.asObservable();
+
   private threadListSource = new Subject<Array<Thread>>();
   public readonly threadList: Observable<Array<Thread>> = this.threadListSource.asObservable();
 
@@ -157,5 +160,9 @@ export class DataService {
 
   clearThreadList(): void {
     this.threadListSource.next(void Array<Thread>());
+  }
+
+  updateRouteParamTag(tag: string): void {
+    this.routeParamTagSource.next(tag);
   }
 }

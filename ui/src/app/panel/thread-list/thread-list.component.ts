@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 import {DataService} from 'app/service/data.service';
 import {convertTimestamp} from 'app/service/utils';
@@ -15,10 +17,17 @@ export class ThreadListComponent implements OnInit {
   threadList$: Observable<Array<Thread>>;
   convertTimestamp = convertTimestamp;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.threadList$ = this.dataService.threadList;
+    this.threadList$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        this.dataService.updateRouteParamTag(params.get('tag'));
+        this.dataService.fetchThreads(params.get('tag'));
+        return this.dataService.threadList;
+      })
+    );
   }
 }
