@@ -41,7 +41,7 @@ public class SpannerService implements DataService {
 
     ImmutableList<Thread> threadList;
 
-    String sqlLStatement = "SELECT * FROM Thread WHERE PrimaryTag = @primaryTag ORDER BY Timestamp DESC";
+    String sqlStatement = "SELECT * FROM Thread WHERE PrimaryTag = @primaryTag ORDER BY Timestamp DESC";
     Statement statement = Statement.newBuilder(sqlStatement).bind("primaryTag").to(tag).build();
 
     try (ResultSet resultSet = dbClient.singleUse().executeQuery(statement)) {
